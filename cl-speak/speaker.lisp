@@ -32,10 +32,10 @@
 (load-foreign-library "libspeak.so")
 
 ;; -----------------------
-;; Error defninitions
+;; Error handling
 ;; -----------------------
 
-(defun null-error-handler (condition)
+(defun cl-speak-error-handler (condition)
   (format *error-output* "~&~A~&" condition)
   (throw 'common-parse niL))
 
@@ -47,41 +47,68 @@
 
 (defun init-with-speech (speech)
   "Initialize synth with given speech."
-   (with-foreign-string (foreign-speech speech)
-     (foreign-funcall "init_with_speech" :string foreign-speech :void)))
+  (handler-case 
+	  (with-foreign-string (foreign-speech speech)
+		(foreign-funcall "init_with_speech" :string foreign-speech :void))
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'init-with-speech': ~A~%" condition))))
+
 
 (defun speak(text)
   "Speaks a lisp-string text. Initialization is needed."
-  (with-foreign-strings ((foreign-text text)
-			 (foreign-speech "com.apple.speech.synthesis.voice.Alex"))
-    (foreign-funcall "speak" :string foreign-text :void)))
+  (handler-case
+	  (with-foreign-strings ((foreign-text text)
+							 (foreign-speech "com.apple.speech.synthesis.voice.Alex"))
+		(foreign-funcall "speak" :string foreign-text :void))
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'speak': ~A~%" condition))))
 
 
 (defun start-speaking-string(text)
   "Wrapper for the function with the same name.
 Look at documentation for 'speak'."
-  (with-foreign-strings ((foreign-text text)
-			 (foreign-speech "com.apple.speech.synthesis.voice.Alex"))
- 
-    (foreign-funcall "start_speaking_string" :string foreign-text :void)))
+  (handler-case
+	  (with-foreign-strings ((foreign-text text)
+							 (foreign-speech "com.apple.speech.synthesis.voice.Alex"))
+		
+		(foreign-funcall "start_speaking_string" :string foreign-text :void))
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'start-speaking-string': ~A~%" condition))))
 
 
 (defun available-voices-count ()
   "Get the amount of all available voices."
-  (let ((retval (foreign-funcall "available_voices_count" :uint)))
-    retval))
+  (handler-case
+	  (let ((retval (foreign-funcall "available_voices_count" :uint)))
+		retval)
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'available-voices-count': ~A~%" condition))))
+
 
 (defun set-voice (idx)
   "Set voice with id 'idx'."
-  (foreign-funcall "set_voice" :uint idx :void))
-
+  (handler-case
+	  (foreign-funcall "set_voice" :uint idx :void)
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'set-voice': ~A~%" condition))))
+  
 
 (defun get-voice-name (idx)
   "Get name of a voice with index 'idx'."
-  (with-foreign-pointer-as-string (voice-c-str 255)
-    (setf (mem-ref voice-c-str :char) 0)
-    (foreign-funcall "get_voice_name" :uint idx :pointer voice-c-str :void)
-    (foreign-string-to-lisp voice-c-str)))
+  (handler-case
+	  (with-foreign-pointer-as-string (voice-c-str 255)
+		(setf (mem-ref voice-c-str :char) 0)
+		(foreign-funcall "get_voice_name" :uint idx :pointer voice-c-str :void)
+		(foreign-string-to-lisp voice-c-str))
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'get-voice-name': ~A~%" condition))))
+
 
 ; -------------------------------------------------------------
 ; These function wrap objective-c class methods

@@ -67,8 +67,8 @@ all necessary files including packages"
   (sleep 1)
   (cl-sp:speak "Guten morgen.")
   (sleep 2)
-  (cl-sp:make-speaker nil)
-  (cl-sp:speak-with nil "Text")
+  (cl-sp:make-speaker nil)           ;; error test
+  (cl-sp:speak-with nil "Text")      ;; "
   ;; -------------------------------
   ;;
   ;; Examples with wrapper of 
