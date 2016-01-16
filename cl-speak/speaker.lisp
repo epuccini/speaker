@@ -12,6 +12,10 @@
 
 (require 'cffi)
 
+;; ---------------------------------
+;; Setup library (platform specific)
+;;----------------------------------
+
 (define-foreign-library libspeak
   (:darwin  "/usr/local/lib/libspeak.dylib")
   (:windows "libspeak.dll")
@@ -20,14 +24,21 @@
 
 (load-foreign-library "libspeak.dylib")
 
+; -------------------------------------------------------------
+; These function wrap basic c-functions working with
+; single speakers. No objects. Designed to fast use.
+; Disadvantage: no callback - only single speakers
+; -------------------------------------------------------------
+
+
 (defun init-with-speech (speech)
+  "Initialize synth with given speech."
    (with-foreign-string (foreign-speech speech)
      (foreign-funcall "init_with_speech" :string foreign-speech :void)))
 
 (defun speak(text)
   (with-foreign-strings ((foreign-text text)
 			 (foreign-speech "com.apple.speech.synthesis.voice.Alex"))
- 
     (foreign-funcall "speak" :string foreign-text :void)))
 
 
@@ -51,4 +62,26 @@
     (setf (mem-ref voice-c-str :char) 0)
     (foreign-funcall "get_voice_name" :uint idx :pointer voice-c-str :void)
     (foreign-string-to-lisp voice-c-str)))
+
+; -------------------------------------------------------------
+; These function wrap objective-c class methods
+; First call have to be make-speaker to create
+; a Speaker-class instance
+; Avantage: callbacks - multiple speakers
+; -------------------------------------------------------------
+
+(defun make-speaker (speech)
+  "Create speaker instance and initialize
+created synth instance with given speech."
+   (with-foreign-string (foreign-speech speech)
+     (let ((speaker (foreign-funcall "make_speaker" :string foreign-speech :pointer)))
+	   speaker)))
+
+(defun speak-with (speaker text)
+  (with-foreign-string (foreign-text text)
+  (foreign-funcall "speak_with" :pointer speaker :string foreign-text :void)))
+
+
+(defun set-voice-with(speaker voiceid)
+  (foreign-funcall "set-voice-with" :pointer speaker :uint voiceid :void))
 

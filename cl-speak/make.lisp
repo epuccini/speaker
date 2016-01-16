@@ -56,7 +56,10 @@ all necessary files including packages"
   (cl-sp:speak "Two for one")
   (sleep 1)
   (cl-sp:set-voice 7)
-  (cl-sp:speak "Three are gone"))
+  (cl-sp:speak "Three are gone")
+  (let ((speaker (cl-sp:make-speaker  "com.apple.speech.synthesis.voice.anna")))
+	(cl-sp:speak-with speaker "Hello object oriented scum.")
+	(print speaker)))
 
 (main)
 

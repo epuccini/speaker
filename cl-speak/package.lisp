@@ -21,5 +21,11 @@
    #:start-speaking-string
    #:available-voices-count
    #:set-voice
-   #:get-voice-name))
+   #:get-voice-name
+   #:make-speaker
+   #:speak-with
+   #:set-voice-with))
 
+;; void* make_speaker(char* speech);
+;; void speak_with(void* speaker, char* text);
+;; void set_voice_with(void* speaker, int index);
