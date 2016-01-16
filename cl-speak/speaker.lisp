@@ -84,6 +84,18 @@ created synth instance with given speech."
 (defun set-voice-with (speaker voiceid)
   (foreign-funcall "set_voice_with" :pointer speaker :uint voiceid :void))
 
+;; ------------------------------------------------------
+;; Lisp callbacks are called within objective-c delegates
+;; ------------------------------------------------------
+
+(defun register-will-speak-word-callback (speaker callback)
+  (foreign-funcall "register_will_speak_word_callback" 
+				   :pointer speaker :pointer callback :void))
+
+(defun register-will-speak-phoneme-callback (speaker callback)
+  (foreign-funcall "register_will_speak_phoneme_callback" 
+				   :pointer speaker :pointer callback :void))
+
 (defun register-did-finish-speaking-callback (speaker callback)
   (foreign-funcall "register_did_finish_speaking_callback" 
 				   :pointer speaker :pointer callback :void))

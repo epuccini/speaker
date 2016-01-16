@@ -25,4 +25,6 @@
    #:make-speaker
    #:speak-with
    #:set-voice-with
+   #:register-will-speak-word-callback
+   #:register-will-speak-phoneme-callback
    #:register-did-finish-speaking-callback))

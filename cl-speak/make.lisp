@@ -41,10 +41,15 @@ all necessary files including packages"
 
 ;; Example application
 
+(cffi:defcallback wsw-callback :void ((text :string))
+	(print "Called back and word spoken: ~A!~%" text))
+
+(cffi:defcallback wsp-callback :void ((op-code :short))
+  (format t  "Called back and phoneme spoke (op-code: ~D)!~%" op-code))
+
 (cffi:defcallback dfs-callback :void ()
-  (print "Called back!"))
-;  (cl-sp:set-voice 7)
-;  (cl-sp:speak "Thats it. Callback called!"))
+  (print "Called back and did finish!"))
+
 
 (Defun main ()
   ;; --------
@@ -63,6 +68,8 @@ all necessary files including packages"
   (cl-sp:speak "Guten morgen.")
   (sleep 2)
   (let ((speaker (cl-sp:make-speaker  "com.apple.speech.synthesis.voice.anna")))
+	(cl-sp:register-will-speak-word-callback speaker (cffi:callback wsw-callback))
+	(cl-sp:register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
 	(cl-sp:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
 	(cl-sp:set-voice-with speaker 7)
 	(cl-sp:speak-with speaker "Test delegate.")
