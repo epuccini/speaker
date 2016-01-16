@@ -18,7 +18,10 @@ static char* pszVoiceAlex = "com.apple.speech.synthesis.voice.Alex";
 void* make_speaker(char* speech);
 void speak_with(void* speaker, char* text);
 void set_voice_with(void* speaker, int index);
-void register_did_finish_speaking_callback(void* speaker, callback cb);
+
+void register_will_speak_word_callback(void* speaker, wsw_callback cb);
+void register_will_speak_phoneme_callback(void* speaker, wsp_callback cb);
+void register_did_finish_speaking_callback(void* speaker, dfs_callback cb);
 
 // Basic c interface
 

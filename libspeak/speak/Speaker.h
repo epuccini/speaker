@@ -10,12 +10,16 @@
 
 #import <AppKit/AppKit.h>
 
-typedef void(*callback)(void);
+typedef void(*wsw_callback)(char*);
+typedef void(*wsp_callback)(short);
+typedef void(*dfs_callback)(void);
 
 @interface Speaker : NSObject<NSSpeechSynthesizerDelegate> {
     NSSpeechSynthesizer* synth;
     unsigned int voiceid;
-    callback did_finish_speaking_callback;
+    wsw_callback will_speak_word_callback;
+    wsp_callback will_speak_phoneme_callback;
+    dfs_callback did_finish_speaking_callback;
 }
 
 @property (nonatomic, retain)NSSpeechSynthesizer* synth;
@@ -23,7 +27,11 @@ typedef void(*callback)(void);
 
 - (id)initWithSpeach:(char*)speech;
 - (IBAction)speakWithText:(NSString*)text;
-- (void)registerDidFinishSpeakingCallback:(callback)cb;
+
+- (void)registerWillSpeakWordCallback:(wsw_callback)cb;
+- (void)registerWillSpeakPhonemeCallback:(wsp_callback)cb;
+- (void)registerDidFinishSpeakingCallback:(dfs_callback)cb;
+
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender
             willSpeakWord:(NSRange)wordToSpeak
                  ofString:(NSString *)text;

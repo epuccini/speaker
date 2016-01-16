@@ -28,7 +28,17 @@
     return self;
 }
 
-- (void)registerDidFinishSpeakingCallback:(callback)cb
+- (void)registerWillSpeakWordCallback:(wsw_callback)cb
+{
+    will_speak_word_callback = cb;
+}
+
+- (void)registerWillSpeakPhonemeCallback:(wsp_callback)cb
+{
+    will_speak_phoneme_callback = cb;
+}
+
+- (void)registerDidFinishSpeakingCallback:(dfs_callback)cb
 {
     did_finish_speaking_callback = cb;
 }
@@ -38,7 +48,7 @@
     // speak with speaker instance
     [synth startSpeakingString:text];
     // call when finished speaking
-    [synth.delegate speechSynthesizer:synth didFinishSpeaking:true];
+    //[synth.delegate speechSynthesizer:synth didFinishSpeaking:true];
 }
 
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender
@@ -46,13 +56,24 @@
                  ofString:(NSString *)text
 {
     NSLog(@"willSpeakWord %@", text);
+    if (will_speak_word_callback != NULL)
+    {
+        char pszForeignText[1024];
+        strcpy(pszForeignText, [text cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+        (*will_speak_word_callback)(pszForeignText);
+    }
 }
 
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender
          willSpeakPhoneme:(short)phonemeOpcode
 {
     NSLog(@"willSpeakPhoneme %d", phonemeOpcode);
+    if (will_speak_phoneme_callback != NULL)
+    {
+        (*will_speak_phoneme_callback)(phonemeOpcode);
+    }
 }
+
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender
         didFinishSpeaking:(BOOL)success
 {

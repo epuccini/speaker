@@ -32,7 +32,22 @@ void set_voice_with(void* speaker, int index)
     [[((__bridge Speaker*)speaker) synth] setVoice:voiceID];
 }
 
-void register_did_finish_speaking_callback(void* speaker, callback cb)
+////////////////////////////////////////////////
+//
+// Lisp callbacks can be registered here and
+// will be called in Speaker-instance
+//
+void register_will_speak_word_callback(void* speaker, wsw_callback cb)
+{
+    [((__bridge Speaker*)speaker) registerWillSpeakWordCallback:cb];
+}
+
+void register_will_speak_phoneme_callback(void* speaker, wsp_callback cb)
+{
+    [((__bridge Speaker*)speaker) registerWillSpeakPhonemeCallback:cb];
+}
+
+void register_did_finish_speaking_callback(void* speaker, dfs_callback cb)
 {
     [((__bridge Speaker*)speaker) registerDidFinishSpeakingCallback:cb];
 }
