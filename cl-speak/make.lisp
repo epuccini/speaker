@@ -52,10 +52,10 @@ all necessary files including packages"
 
 
 (Defun main ()
-  ;; --------
+  ;; -------------------------------
   ;;
-  ;; Examples
-  ;;
+  ;; Examples with plain c interface
+  ;; 
   (cl-sp:init-with-speech  "com.apple.speech.synthesis.voice.Alex")
 
   (cl-sp:speak "One two three")
@@ -67,13 +67,18 @@ all necessary files including packages"
   (sleep 1)
   (cl-sp:speak "Guten morgen.")
   (sleep 2)
+  ;; -------------------------------
+  ;;
+  ;; Examples with wrapper of 
+  ;; objective-c implementation
+  ;;
   (let ((speaker (cl-sp:make-speaker  "com.apple.speech.synthesis.voice.anna")))
 	(cl-sp:register-will-speak-word-callback speaker (cffi:callback wsw-callback))
 	(cl-sp:register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
 	(cl-sp:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
 	(cl-sp:set-voice-with speaker 7)
 	(cl-sp:speak-with speaker "Test delegate.")
-	(sleep 2)
+	(sleep 3)
 	(cl-sp:set-voice-with speaker 7)
 	(cl-sp:speak-with speaker "Next delegate.")))
 

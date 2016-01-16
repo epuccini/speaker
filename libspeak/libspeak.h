@@ -1,3 +1,4 @@
+////////////////////////////////////////////////
 //
 //  speak.h
 //  speak - c-interface for cffi to lisp
@@ -5,13 +6,11 @@
 //  Created by Edward Puccini on 15.01.16.
 //  Copyright (c) 2016 Edward Puccini. All rights reserved.
 //
+////////////////////////////////////////////////
 
-#import <Foundation/Foundation.h>
+////////////////////////////////////////////////
 
-#include "Speaker.h"
-
-static NSSpeechSynthesizer *synth = NULL;
-static char* pszVoiceAlex = "com.apple.speech.synthesis.voice.Alex";
+const char* pszVoiceAlex = "com.apple.speech.synthesis.voice.Alex";
 
 // Basic objective-c interface
 

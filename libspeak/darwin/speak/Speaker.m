@@ -1,3 +1,4 @@
+////////////////////////////////////////////////
 //
 //  Speaker.h
 //  Speaker - container for NSSpeechSynthesizer
@@ -5,8 +6,11 @@
 //  Created by Edward Puccini on 15.01.16.
 //  Copyright © 2016 Edward Puccini. All rights reserved.
 //
+////////////////////////////////////////////////
 
 #import "Speaker.h"
+
+////////////////////////////////////////////////
 
 @implementation Speaker
 

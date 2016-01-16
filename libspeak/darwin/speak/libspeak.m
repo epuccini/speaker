@@ -1,12 +1,22 @@
+////////////////////////////////////////////////
 //
-//  speak.m
+//  speak.c
 //  speak - c-interface for cffi to lisp
 //
 //  Created by Edward Puccini on 15.01.16.
 //  Copyright (c) 2016 Edward Puccini. All rights reserved.
 //
+////////////////////////////////////////////////
 
-#import "speak.h"
+#import <Foundation/Foundation.h>
+
+#include "Speaker.h"
+#include "libspeak.h"
+
+////////////////////////////////////////////////
+
+// static object pointer
+static NSSpeechSynthesizer *synth = NULL;
 
 ////////////////////////////////////////////////
 //

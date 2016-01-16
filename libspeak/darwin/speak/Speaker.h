@@ -1,3 +1,4 @@
+////////////////////////////////////////////////
 //
 //  Speaker.h
 //  Container for NSSpeechSynthesizer
@@ -5,10 +6,13 @@
 //  Created by Edward Puccini on 15.01.16.
 //  Copyright © 2016 Edward Puccini. All rights reserved.
 //
+////////////////////////////////////////////////
 
 #import <Foundation/Foundation.h>
 
 #import <AppKit/AppKit.h>
+
+////////////////////////////////////////////////
 
 typedef void(*wsw_callback)(char*);
 typedef void(*wsp_callback)(short);
