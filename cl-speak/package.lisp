@@ -10,11 +10,10 @@
 
 (in-package :common-lisp)
 
-(require 'pcall)
 (require 'cffi)
 
 (defpackage :cl-sp
-  (:use #:cl #:cffi #:pcall #:swank) 
+  (:use #:cl #:cffi) 
   (:export
    #:init-with-speech
    #:speak

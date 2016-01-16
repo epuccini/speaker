@@ -51,7 +51,7 @@ all necessary files including packages"
   (print "Called back and did finish!"))
 
 
-(Defun main ()
+(defun main ()
   ;; -------------------------------
   ;;
   ;; Examples with plain c interface
