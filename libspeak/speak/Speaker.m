@@ -28,12 +28,16 @@
     return self;
 }
 
+- (void)registerDidFinishSpeakingCallback:(callback)cb
+{
+    did_finish_speaking_callback = cb;
+}
+
 - (IBAction)speakWithText:(NSString*)text
 {
-    NSString *voiceID = [[NSSpeechSynthesizer availableVoices] objectAtIndex:voiceid];
-    
-    [synth setVoice:voiceID];
+    // speak with speaker instance
     [synth startSpeakingString:text];
+    // call when finished speaking
     [synth.delegate speechSynthesizer:synth didFinishSpeaking:true];
 }
 
@@ -53,6 +57,10 @@
         didFinishSpeaking:(BOOL)success
 {
     NSLog(@"didFinishSpeaking %d", success);
+    if (did_finish_speaking_callback != NULL)
+    {
+        (*did_finish_speaking_callback)();
+    }
 }
 
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender

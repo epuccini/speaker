@@ -79,9 +79,11 @@ created synth instance with given speech."
 
 (defun speak-with (speaker text)
   (with-foreign-string (foreign-text text)
-  (foreign-funcall "speak_with" :pointer speaker :string foreign-text :void)))
+	(foreign-funcall "speak_with" :pointer speaker :string foreign-text :void)))
 
+(defun set-voice-with (speaker voiceid)
+  (foreign-funcall "set_voice_with" :pointer speaker :uint voiceid :void))
 
-(defun set-voice-with(speaker voiceid)
-  (foreign-funcall "set-voice-with" :pointer speaker :uint voiceid :void))
-
+(defun register-did-finish-speaking-callback (speaker callback)
+  (foreign-funcall "register_did_finish_speaking_callback" 
+				   :pointer speaker :pointer callback :void))

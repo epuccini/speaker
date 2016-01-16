@@ -23,13 +23,18 @@ void* make_speaker(char* speech)
 void speak_with(void* speaker, char* text)
 {
     [((__bridge Speaker*)speaker) speakWithText:[[NSString alloc] initWithCString:text
-                                                    encoding: NSASCIIStringEncoding]];
+                                                                         encoding: NSASCIIStringEncoding]];
 }
 
 void set_voice_with(void* speaker, int index)
 {
     NSString *voiceID =[[NSSpeechSynthesizer availableVoices] objectAtIndex:index];
     [[((__bridge Speaker*)speaker) synth] setVoice:voiceID];
+}
+
+void register_did_finish_speaking_callback(void* speaker, callback cb)
+{
+    [((__bridge Speaker*)speaker) registerDidFinishSpeakingCallback:cb];
 }
 
 ////////////////////////////////////////////////

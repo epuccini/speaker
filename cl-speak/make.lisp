@@ -41,7 +41,12 @@ all necessary files including packages"
 
 ;; Example application
 
-(defun main ()
+(cffi:defcallback dfs-callback :void ()
+  (print "Called back!"))
+;  (cl-sp:set-voice 7)
+;  (cl-sp:speak "Thats it. Callback called!"))
+
+(Defun main ()
   ;; --------
   ;;
   ;; Examples
@@ -52,14 +57,17 @@ all necessary files including packages"
   (sleep 2)
   (format t "Available-voices: ~D~%" (cl-sp:available-voices-count))
   (format t "Get-voice(~D): ~A~%" (cl-sp:get-voice-name 6) 6)
-  (cl-sp:set-voice 8)
-  (cl-sp:speak "Two for one")
+  (cl-sp:set-voice 6)
+  (cl-sp:speak "Hallo Eddie")
   (sleep 1)
-  (cl-sp:set-voice 7)
-  (cl-sp:speak "Three are gone")
+  (cl-sp:speak "Guten morgen.")
+  (sleep 2)
   (let ((speaker (cl-sp:make-speaker  "com.apple.speech.synthesis.voice.anna")))
-	(cl-sp:speak-with speaker "Hello object oriented scum.")
-	(print speaker)))
+	(cl-sp:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
+	(cl-sp:set-voice-with speaker 7)
+	(cl-sp:speak-with speaker "Test delegate.")
+	(sleep 2)
+	(cl-sp:set-voice-with speaker 7)
+	(cl-sp:speak-with speaker "Next delegate.")))
 
 (main)
-

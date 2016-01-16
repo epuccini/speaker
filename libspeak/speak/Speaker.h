@@ -10,9 +10,12 @@
 
 #import <AppKit/AppKit.h>
 
+typedef void(*callback)(void);
+
 @interface Speaker : NSObject<NSSpeechSynthesizerDelegate> {
     NSSpeechSynthesizer* synth;
     unsigned int voiceid;
+    callback did_finish_speaking_callback;
 }
 
 @property (nonatomic, retain)NSSpeechSynthesizer* synth;
@@ -20,7 +23,7 @@
 
 - (id)initWithSpeach:(char*)speech;
 - (IBAction)speakWithText:(NSString*)text;
-
+- (void)registerDidFinishSpeakingCallback:(callback)cb;
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender
             willSpeakWord:(NSRange)wordToSpeak
                  ofString:(NSString *)text;
