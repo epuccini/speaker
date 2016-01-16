@@ -31,6 +31,14 @@
 #+linux
 (load-foreign-library "libspeak.so")
 
+;; -----------------------
+;; Error defninitions
+;; -----------------------
+
+(defun null-error-handler (condition)
+  (format *error-output* "~&~A~&" condition)
+  (throw 'common-parse niL))
+
 ; -------------------------------------------------------------
 ; These function wrap basic c-functions working with
 ; single speakers. No objects. Designed to fast use.
@@ -85,18 +93,30 @@ Look at documentation for 'speak'."
 (defun make-speaker (speech)
   "Create speaker instance and initialize
 created synth instance with given speech."
-   (with-foreign-string (foreign-speech speech)
-     (let ((speaker (foreign-funcall "make_speaker" :string foreign-speech :pointer)))
-	   speaker)))
+  (handler-case 
+	  (with-foreign-string (foreign-speech speech)
+		(let ((speaker (foreign-funcall "make_speaker" :string foreign-speech :pointer)))
+		  speaker))
+	(error (condition)
+	  (format *error-output* "CL-Speak: error in 'make-speaker': ~A~%" condition))))
 
 (defun speak-with (speaker text)
   "Speak text with synth container 'Speaker'."
-  (with-foreign-string (foreign-text text)
-	(foreign-funcall "speak_with" :pointer speaker :string foreign-text :void)))
+  (handler-case 
+	  (with-foreign-string (foreign-text text)
+		(foreign-funcall "speak_with" :pointer 
+						 speaker :string 
+						 foreign-text :void))
+	(error (condition) 
+	  (format *error-output* "CL-Speak: error in 'speak-with': ~A~%" condition))))
 
 (defun set-voice-with (speaker voiceid)
   "Set voiceid in synth container 'Speaker'."
-  (foreign-funcall "set_voice_with" :pointer speaker :uint voiceid :void))
+  (handler-case 
+	  (foreign-funcall "set_voice_with" :pointer speaker :uint voiceid :void)
+	(error (condition) 
+	  (format *error-output* "CL-Speak: error in 'set-voice-with': ~A~%" condition))))
+
 
 ;; ------------------------------------------------------
 ;; Lisp callbacks are called within objective-c delegates
@@ -104,15 +124,30 @@ created synth instance with given speech."
 
 (defun register-will-speak-word-callback (speaker callback)
   "Register callback for 'willSpeakWord' delegate."
-  (foreign-funcall "register_will_speak_word_callback" 
-				   :pointer speaker :pointer callback :void))
+  (handler-case
+	  (foreign-funcall "register_will_speak_word_callback" 
+					   :pointer speaker :pointer callback :void)
+	(error (condition) 
+	  (format *error-output* 
+			  "CL-Speak: error in 'register-will-speak-word-callback': ~A~%" condition))))
+
 
 (defun register-will-speak-phoneme-callback (speaker callback)
   "Register callback for 'willSpeakPhoneme' delegate."
-  (foreign-funcall "register_will_speak_phoneme_callback" 
-				   :pointer speaker :pointer callback :void))
+  (handler-case
+	  (foreign-funcall "register_will_speak_phoneme_callback" 
+					   :pointer speaker :pointer callback :void)
+	(error (condition) 
+	  (format *error-output* 
+			  "CL-Speak: error in 'register-will-speak-phoneme-callback': ~A~%" condition))))
+
 
 (defun register-did-finish-speaking-callback (speaker callback)
   "Register callback for 'didFinishSpeaking' delegate."
-  (foreign-funcall "register_did_finish_speaking_callback" 
-				   :pointer speaker :pointer callback :void))
+  (handler-case
+	  (foreign-funcall "register_did_finish_speaking_callback" 
+					   :pointer speaker :pointer callback :void)
+	(error (condition) 
+	  (format *error-output* 
+			  "CL-Speak: error in 'register-did-finish-speaking-cakkback': ~A~%" condition))))
+
