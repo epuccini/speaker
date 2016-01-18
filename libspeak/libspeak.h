@@ -7,27 +7,49 @@
 //  Copyright (c) 2016 Edward Puccini. All rights reserved.
 //
 ////////////////////////////////////////////////
+#pragma once 
 
 ////////////////////////////////////////////////
+// Callback types
+//
+typedef void(*wsw_callback)(char*);
+typedef void(*wsp_callback)(short);
+typedef void(*dfs_callback)(void);
 
-const char* pszVoiceAlex = "com.apple.speech.synthesis.voice.Alex";
+////////////////////////////////////////////////
+// Basic c interface to wrap objective-c 
+// for direct cffi access
+//
+#ifdef _WINDLL
+	#define DLL_MODE_EXPORT
+	#ifdef DLL_MODE_EXPORT	
+		#define LIBRARY_EXPORT   __declspec( dllexport ) 
+	#else
+		#define LIBRARY_EXPORT   __declspec( dllimport ) 
+	#endif
+#else
+    #define LIBRARY_EXPORT
+#endif
 
-// Basic objective-c interface
-
-void* make_speaker(char* speech);
-void speak_with(void* speaker, char* text);
-void set_voice_with(void* speaker, int index);
-
-void register_will_speak_word_callback(void* speaker, wsw_callback cb);
-void register_will_speak_phoneme_callback(void* speaker, wsp_callback cb);
-void register_did_finish_speaking_callback(void* speaker, dfs_callback cb);
-
-// Basic c interface
-
-void init_with_speech(char* speech);
-void loop_start();
-void speak(char* text);
-void start_speaking_string(char* text);
-void set_voice(int index);
-unsigned int available_voices_count(void);
-void get_voice_name(unsigned int idx, char* pszOut);
+#ifdef _WINDLL
+extern "C"
+{
+#endif
+    LIBRARY_EXPORT void* make_speaker(char* speech);
+    LIBRARY_EXPORT void speak_with(void* speaker, char* text);
+    LIBRARY_EXPORT void set_voice_with(void* speaker, int index);
+    LIBRARY_EXPORT void cleanup_with(void* speaker);
+    
+    LIBRARY_EXPORT void register_will_speak_word_callback(void* speaker, wsw_callback cb);
+    LIBRARY_EXPORT void register_will_speak_phoneme_callback(void* speaker, wsp_callback cb);
+    LIBRARY_EXPORT void register_did_finish_speaking_callback(void* speaker, dfs_callback cb);
+    
+    LIBRARY_EXPORT void init_with_speech(char* speech);
+    LIBRARY_EXPORT void speak(char* text);
+    LIBRARY_EXPORT void set_voice(int index);
+    LIBRARY_EXPORT unsigned int available_voices_count(void);
+    LIBRARY_EXPORT void get_voice_name(unsigned int idx, char* pszOut);
+    LIBRARY_EXPORT void cleanup(void);
+#ifdef _WINDLL
+}
+#endif

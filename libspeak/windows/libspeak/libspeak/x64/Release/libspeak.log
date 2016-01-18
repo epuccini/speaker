@@ -1,0 +1,11 @@
+﻿  libspeak.cpp
+c:\program files\microsoft sdks\windows\v7.1\include\sal_supp.h(57): warning C4005: '__useHeader': Makro-Neudefinition
+          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\sal.h(2872): Siehe vorherige Definition von '__useHeader'
+c:\program files\microsoft sdks\windows\v7.1\include\specstrings_supp.h(77): warning C4005: '__on_failure': Makro-Neudefinition
+          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\sal.h(2882): Siehe vorherige Definition von '__on_failure'
+     Bibliothek "D:\Code\Common Lisp\projects\CL-Speak\libspeak\windows\libspeak\x64\Release\libspeak.lib" und Objekt "D:\Code\Common Lisp\projects\CL-Speak\libspeak\windows\libspeak\x64\Release\libspeak.exp" werden erstellt.
+  Code wird generiert.
+  Codegenerierung ist abgeschlossen.
+LINK : warning LNK4199: /DELAYLOAD:shcore.dll wird ignoriert; keine Importe von shcore.dll gefunden.
+LINK : warning LNK4199: /DELAYLOAD:shlwapi.dll wird ignoriert; keine Importe von shlwapi.dll gefunden.
+  libspeak.vcxproj -> D:\Code\Common Lisp\projects\CL-Speak\libspeak\windows\libspeak\x64\Release\libspeak.dll

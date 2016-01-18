@@ -24,7 +24,8 @@
 (defmacro load-and-compile-set (directory &body forms)
 "Macro for doing the same things in seuquence"
   `(progn
-    ,@(loop for f in forms collect `(load (compile-file (merge-pathnames ,directory ,f))))))
+    ,@(loop for f in forms collect 
+	   `(load (compile-file (merge-pathnames ,directory ,f))))))
 
 ;
 ; Compile all files on C-c C-c
@@ -56,32 +57,34 @@ all necessary files including packages"
   ;;
   ;; Examples with plain c interface
   ;; 
-  (cl-sp:init-with-speech  "com.apple.speech.synthesis.voice.Alex")
+  (cl-sp:init-with-speech "com.apple.speech.synthesis.voice.Alex")
 
   (cl-sp:speak "One two three")
   (sleep 2)
   (format t "Available-voices: ~D~%" (cl-sp:available-voices-count))
-  (format t "Get-voice(~D): ~A~%" (cl-sp:get-voice-name 6) 6)
+  (format t "Get-voice(~D): ~A~%" (cl-sp:get-voice-name 6) "")
   (cl-sp:set-voice 6)
   (cl-sp:speak "Hallo Eddie")
   (sleep 1)
   (cl-sp:speak "Guten morgen.")
+  (cl-sp:cleanup)
   (sleep 2)
-  (cl-sp:make-speaker nil)           ;; error test
-  (cl-sp:speak-with nil "Text")      ;; "
+  ;(cl-sp:make-speaker nil)           ;; error test
+  ;(cl-sp:speak-with nil "Text")      ;; "
   ;; -------------------------------
   ;;
   ;; Examples with wrapper of 
   ;; objective-c implementation
   ;;
   (let ((speaker (cl-sp:make-speaker  "com.apple.speech.synthesis.voice.anna")))
-	(cl-sp:register-will-speak-word-callback speaker (cffi:callback wsw-callback))
-	(cl-sp:register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
-	(cl-sp:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
-	(cl-sp:set-voice-with speaker 7)
-	(cl-sp:speak-with speaker "Test delegate.")
-	(sleep 3)
-	(cl-sp:set-voice-with speaker 7)
-	(cl-sp:speak-with speaker "Next delegate.")))
+  	(cl-sp:register-will-speak-word-callback speaker (cffi:callback wsw-callback))
+  	(cl-sp:register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
+  	(cl-sp:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
+  	(cl-sp:set-voice-with speaker 7)
+  	(cl-sp:speak-with speaker "Test delegate.")
+  	(sleep 3)
+  	(cl-sp:set-voice-with speaker 7)
+  	(cl-sp:speak-with speaker "Next delegate.")
+	(cl-sp:cleanup-with speaker)))
 
 (main)

@@ -12,11 +12,9 @@
 
 #import <AppKit/AppKit.h>
 
-////////////////////////////////////////////////
+#include "libspeak.h"
 
-typedef void(*wsw_callback)(char*);
-typedef void(*wsp_callback)(short);
-typedef void(*dfs_callback)(void);
+////////////////////////////////////////////////
 
 @interface Speaker : NSObject<NSSpeechSynthesizerDelegate> {
     NSSpeechSynthesizer* synth;
@@ -29,7 +27,7 @@ typedef void(*dfs_callback)(void);
 @property (nonatomic, retain)NSSpeechSynthesizer* synth;
 @property (nonatomic)unsigned int voiceid;
 
-- (id)initWithSpeach:(char*)speech;
+- (id)initWithSpeech:(char*)speech;
 - (IBAction)speakWithText:(NSString*)text;
 
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb;

@@ -1,0 +1,8 @@
+﻿  stdafx.cpp
+c:\program files\microsoft sdks\windows\v7.1\include\sal_supp.h(57): warning C4005: '__useHeader': Makro-Neudefinition
+          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\sal.h(2872): Siehe vorherige Definition von '__useHeader'
+c:\program files\microsoft sdks\windows\v7.1\include\specstrings_supp.h(77): warning C4005: '__on_failure': Makro-Neudefinition
+          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\include\sal.h(2882): Siehe vorherige Definition von '__on_failure'
+C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\atlmfc\include\atlcore.h(638): error C2039: 'SetDefaultDllDirectories': Ist kein Element von '`global namespace''
+C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\atlmfc\include\atlcore.h(638): error C2065: 'SetDefaultDllDirectories': nichtdeklarierter Bezeichner
+C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\atlmfc\include\atlcore.h(640): error C2065: 'LOAD_LIBRARY_SEARCH_SYSTEM32': nichtdeklarierter Bezeichner

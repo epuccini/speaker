@@ -18,15 +18,14 @@
 
 (define-foreign-library libspeak
   (:darwin  (:or "libspeak.dylib" "/usr/local/lib/libspeak.dylib"))
-  (:windows (:or "libspeak.dll" "c:\\WINDOWS\\system32\\libspeak.dll"))
-  (:unix (:or "libspeak.so" "/usr/local/lib/libspeak.so"))
-  (t (:default "libspeak")))
+  (:windows (:or #P"libspeak.dll" #P"D:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll"))
+  (:unix (:or "libspeak.so" "/usr/local/lib/libspeak.so")))
 
 #+darwin 
 (load-foreign-library "libspeak.dylib")
 
-#+windows 
-(load-foreign-library "libspeak.dll")
+#+windows
+(load-foreign-library #P"D:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll")
 
 #+linux
 (load-foreign-library "libspeak.so")
@@ -66,19 +65,6 @@
 			  "CL-Speak: error in 'speak': ~A~%" condition))))
 
 
-(defun start-speaking-string(text)
-  "Wrapper for the function with the same name.
-Look at documentation for 'speak'."
-  (handler-case
-	  (with-foreign-strings ((foreign-text text)
-							 (foreign-speech "com.apple.speech.synthesis.voice.Alex"))
-		
-		(foreign-funcall "start_speaking_string" :string foreign-text :void))
-	(error (condition)
-	  (format *error-output* 
-			  "CL-Speak: error in 'start-speaking-string': ~A~%" condition))))
-
-
 (defun available-voices-count ()
   "Get the amount of all available voices."
   (handler-case
@@ -108,6 +94,15 @@ Look at documentation for 'speak'."
 	(error (condition)
 	  (format *error-output* 
 			  "CL-Speak: error in 'get-voice-name': ~A~%" condition))))
+
+(defun cleanup ()
+  "Cleanup. Expecially useful for com-connection in windows."
+  (handler-case
+	  (foreign-funcall "cleanup" :void)
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'cleanup': ~A~%" condition))))
+  
 
 
 ; -------------------------------------------------------------
@@ -144,7 +139,14 @@ created synth instance with given speech."
 	(error (condition) 
 	  (format *error-output* "CL-Speak: error in 'set-voice-with': ~A~%" condition))))
 
-
+(defun cleanup-with (speaker)
+  "Cleanup. Expecially useful for com-connection in windows."
+  (handler-case
+	  (foreign-funcall "cleanup_with" :pointer speaker :void)
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'cleanup-with': ~A~%" condition))))
+  
 ;; ------------------------------------------------------
 ;; Lisp callbacks are called within objective-c delegates
 ;; ------------------------------------------------------

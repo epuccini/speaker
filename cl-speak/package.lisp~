@@ -1,159 +1,30 @@
 ; -------------------------------------------------------------
-; Edward Alan Puccini 19.12.2015
+; Edward Alan Puccini 16.01.2016
 ; -------------------------------------------------------------
-; Global package
+; CL-Speak package
 ; -------------------------------------------------------------
-; file: glm-package.lisp
+; file: package.lisp
+; -------------------------------------------------------------
+; 
 ; -------------------------------------------------------------
 
 (in-package :common-lisp)
 
-(require 'stmx)
-(require 'bordeaux-threads)
+(require 'cffi)
 
-(defpackage :glm
-  (:use #:cl #:stmx #:bordeaux-threads #:swank) 
-  (:export                       ;; Infrastructure glm-globals.lisp
-   #:load-and-compile-set
-   #:update-swank
-   :vertices                     ;; " 
-   :indices
-   :vertices-size
-   :indices-size
-   :FLOATS-PER-ENTRY
-   :MODEL-PATH
-   :CUBE-MODEL-PATH
-   :SPHERE-MODEL-PATH
-   :CONE-MODEL-PATH
-   :MONKEY-MODEL-PATH
-   :WORLD-PATH
-   :MARBLE-TEXTURE-PATH
-   :SPLIT-TEXTURE-PATH
-   :*vertices*
-   :*normals*
-   :*textures*
-   :*indices*
-   :*indices-vt*
-   :*indices-vn*
-   #:safe-pop-vertex
-   #:safe-get-element
-   #:parse-tokens
-   #:store-index-vvtvn-param
-   #:store-index-vvn-param
-   #:store-index-vvt-param
-   #:store-index-v-param
-   #:store-index-param
-   #:clear-parameter
-   :*model-name*
-   :*comments*                   ;; Infrastructurexs
-   #:unserialize                 ;; glm-persistance.lisp
-   #:serialize
-   #:->                          ;; glm-utility.lisp
-   #:mapfn                       ;; "
-   #:pmapfn                      ;; "
-   #:curry
-   #:load-ascii
-   #:load-ascii-lines
-   #:save-ascii
-   #:find-char
-   #:open-binary
-   #:load-binary
-   #:save-binary
-   #:load-png                    ;; "               glm-texture.lisp
-   :buffer-entry                 ;; Domain types and classes in glm-types.lisp
-   :vertex
-   :model                        ;; class
-   :light                        ;; class
-   :model-group                  ;; class
-   :model-composite              ;; base-class
-   #:children-of
-   #:name-of
-   :parse
-   :*load-dispatch*
-   :*save-dispatch*
-   #:load-glm-model              ;; Domain class-methods in glm-model.lisp
-   #:load-glm-model-V0-0         ;; "
-   #:save-glm-model-V0-0         ;; "
-   #:load-obj-model              ;; "
-   #:load-tree-model
-   #:load-model-texture
-   #:enumerate-lights
-   #:enumerate-lights-dynmic
-   #:generate-lights-macro
-   #:make-group-with-childs
-   #:make-group
-   #:make-model
-   #:make-lights
-   #:make-camera
-   :*lights*
-   :*lights-p*
-   :*cameras*
-   :*light-keys*
-   #:add-light
-   #:add-childs
-   #:add-child
-   #:make-buffer-entry           ;; "
-   #:make-vertex
-   #:make-model
-   #:make-construct
-   #:make-world                  ;; Domain class methods 
-   #:make-animator
-   #:animator
-   #:animator-compopsite
-   #:animator-group
-   #:animator-queue
-   #:animator-pool
-   #:setup-bg-animator
-   #:progress
-   #:prepare
-   #:lower-char
-   #:upper-char
-   #:be-pos
-   #:be-nrml
-   #:be-txtr
-   #:gen-ieee-encoding
-   #:byte-seq
-   #:read-u32-big-endian
-   #:read-u64-big-endian
-   #:read-u32-small-endian
-   #:read-single-float
-   #:read-double-float
-   #:store-param
-   #:store-vertex-pos
-   #:store-vertext-nrml
-   #:store-vertex-txtr
-   #:store-index
-   :models
-   :worlds
-   #:make-skeleton          ;; Domain class-methods in glm-world.lisp
-   #:make-scene
-   #:setup-viewport
-   #:restore-skeleton
-   #:load-world
-   #:animate-background-color
-   #:model-path
-   #:texture-path
-   #:model-polygon
-   #:draw-frame
-   #:render
-   #:reshape
-   #:setup-animations
-   #:animate
-   #:setup-lights-viewport
-   #:setup-bg-animation
-   #:draw-polygons
-   #:draw-triangles
-   #:draw-lines
-   #:prepare-model
-   #:draw-model
-   #:draw-frame
-   #:reshape
-   #:setup-lights
-   #:mainloop
-   #:start
-   :*app-version* 
-   :*rotx*
-   :*roty*
-   :*rotz*
-   :+window-width+
-   :+window-height+))
+(defpackage :cl-sp
+  (:use #:cl #:cffi) 
+  (:export
+   #:init-with-speech
+   #:speak
+   #:start-speaking-string
+   #:available-voices-count
+   #:set-voice
+   #:get-voice-name
+   #:make-speaker
+   #:speak-with
+   #:set-voice-with
+   #:cleanup
+   #:register-will-speak-word-callback
+   #:register-will-speak-phoneme-callback
+   #:register-did-finish-speaking-callback))

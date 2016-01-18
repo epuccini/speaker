@@ -17,6 +17,7 @@
 
 // static object pointer
 static NSSpeechSynthesizer *synth = NULL;
+const char* pszVoiceAlex = "com.apple.speech.synthesis.voice.Alex";
 
 ////////////////////////////////////////////////
 //
@@ -26,7 +27,7 @@ static NSSpeechSynthesizer *synth = NULL;
 //
 void* make_speaker(char* speech)
 {
-    Speaker* speaker = [[Speaker alloc] initWithSpeach:speech];
+    Speaker* speaker = [[Speaker alloc] initWithSpeech:speech];
     return (__bridge void*)speaker;
 }
 
@@ -40,6 +41,11 @@ void set_voice_with(void* speaker, int index)
 {
     NSString *voiceID =[[NSSpeechSynthesizer availableVoices] objectAtIndex:index];
     [[((__bridge Speaker*)speaker) synth] setVoice:voiceID];
+}
+
+void cleanup_with(void* speaker)
+{
+    speaker = NULL;
 }
 
 ////////////////////////////////////////////////
@@ -79,11 +85,6 @@ void speak(char* text)
     [synth startSpeakingString:[[NSString alloc] initWithCString:text encoding: NSASCIIStringEncoding]];
 }
 
-void start_speaking_string(char* text)
-{
-    [synth startSpeakingString:[[NSString alloc] initWithCString:text encoding: NSASCIIStringEncoding]];
-}
-
 void set_voice(int index)
 {
     NSString *voiceID =[[NSSpeechSynthesizer availableVoices] objectAtIndex:index];
@@ -101,4 +102,9 @@ void get_voice_name(unsigned int i, char* pszOut)
     NSArray *a = [NSSpeechSynthesizer availableVoices];
     const char* pszConst = [[a objectAtIndex:i] cStringUsingEncoding:NSASCIIStringEncoding];
     strcpy(pszOut, pszConst);
+}
+
+void cleanup(void)
+{
+    synth = NULL;
 }

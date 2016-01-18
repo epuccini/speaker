@@ -17,7 +17,7 @@
 @synthesize synth;
 @synthesize voiceid;
 
-- (id)initWithSpeach:(char*)speech {
+- (id)initWithSpeech:(char*)speech {
     self = [super init];
     if (self) {
         // create speech-synth

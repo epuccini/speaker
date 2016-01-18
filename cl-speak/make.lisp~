@@ -1,7 +1,7 @@
 ; -------------------------------------------------------------
-; Edward Alan Puccini 15.07.2015
+; Edward Alan Puccini 16.01.2016
 ; -------------------------------------------------------------
-; OpenGL test with my own model-loader
+; CL-Speak library make and loader
 ; -------------------------------------------------------------
 ; file: make.lisp 
 ; -------------------------------------------------------------
@@ -9,26 +9,14 @@
 ; Compile this file and every other needed file gets compiled.
 ; On error check path in compile-files
 ; -------------------------------------------------------------
-; Requirements: cl-opengl cl-glu cl-glut png pcall stmx
+; Requirements: cffi
 ; -------------------------------------------------------------
 
 ;; -----------------
 ;; External packages
 ;; -----------------
-(require 'cl-opengl)   ; load OpenGL bindings
-(require 'cl-glu)      ; load GLU bindings
-(require 'png)
-(require 'marshal)
-(require 'cl-ppcre)
-(require 'cl-glfw3)
-;(require 'sdl2)
-(require 'alexandria)
-(require 'trivial-main-thread)
-(require 'stmx)
-(require 'bordeaux-threads)
-										;(require 'lparallel)
-(require 'swank)
-(require 'pcall)
+
+(require 'cffi)
 
 ;
 ; load and compile helper
@@ -36,7 +24,8 @@
 (defmacro load-and-compile-set (directory &body forms)
 "Macro for doing the same things in seuquence"
   `(progn
-    ,@(loop for f in forms collect `(load (compile-file (merge-pathnames ,directory ,f))))))
+    ,@(loop for f in forms collect 
+	   `(load (compile-file (merge-pathnames ,directory ,f))))))
 
 ;
 ; Compile all files on C-c C-c
@@ -45,47 +34,56 @@
   "Executed at compile time. Does load and compile
 all necessary files including packages"
   
-  (require 'cl-opengl)   ; load OpenGL bindings
-  (require 'cl-glu)      ; load GLU bindings
-  (require 'png)
-  (require 'marshal)
-  (require 'cl-ppcre)
-  (require 'cl-glfw3)
-  (require 'alexandria)
-  (require 'trivial-main-thread)
-  (require 'stmx)
-  (require 'bordeaux-threads)
-  (require 'pcall)
-  (require 'swank)
+  (require 'cffi)
   
   (load-and-compile-set *default-pathname-defaults*
-	"glm-package.lisp"                        ;; Infrastructure
-	"glm-swank.lisp"
-	"glm-globals.lisp"                        ;; "
-	"glm-persistance.lisp"
-	"glm-string.lisp"
-	"glm-functional.lisp"
-	"glm-file-io.lisp"
-	"glm-types.lisp"                         ;; Domain types and classes
-	"glm-texture.lisp"
-	"glm-model-iface.lisp"
-	"glm-animator-iface.lisp"
-	"glm-scene-iface.lisp"
-	"glm-math.lisp"                          ;; Domain functions
-	"glm-obj-parser.lisp"
-	"glm-model-impl.lisp"                    ;; Domain class-methods    
-	"glm-animator-impl.lisp"
-	"glm-scene-impl.lisp"
-	"glm-renderer-iface.lisp"                ;; Presentation-layer
-	"glm-phong-renderer-iface.lisp"          ;; "
-	"glm-basic-animator-iface.lisp"          ;; "
-	"glm-opengl.lisp"                        ;; "
-	"glm-phong-renderer-impl.lisp"           ;; 
-	"glm-basic-animator-impl.lisp"           ;; "
-	"glm-mainloop.lisp"                      
-	"glm-model-viewer.lisp"))                ;; Example application / Modelviewer
+	"package.lisp"
+	"speaker.lisp"))                
+
+;; Example application
+
+(cffi:defcallback wsw-callback :void ((text :string))
+	(print "Called back and word spoken: ~A!~%" text))
+
+(cffi:defcallback wsp-callback :void ((op-code :short))
+  (format t  "Called back and phoneme spoke (op-code: ~D)!~%" op-code))
+
+(cffi:defcallback dfs-callback :void ()
+  (print "Called back and did finish!"))
+
 
 (defun main ()
-  (glm:start))
+  ;; -------------------------------
+  ;;
+  ;; Examples with plain c interface
+  ;; 
+  (cl-sp:init-with-speech "com.apple.speech.synthesis.voice.Alex")
+
+  (cl-sp:speak "One two three")
+  (sleep 2)
+  (format t "Available-voices: ~D~%" (cl-sp:available-voices-count))
+  (format t "Get-voice(~D): ~A~%" (cl-sp:get-voice-name 6) "")
+  (cl-sp:set-voice 6)
+  (cl-sp:speak "Hallo Eddie")
+  (sleep 1)
+  (cl-sp:speak "Guten morgen.")
+  (sleep 2)
+  ;(cl-sp:make-speaker nil)           ;; error test
+  ;(cl-sp:speak-with nil "Text")      ;; "
+  ;; -------------------------------
+  ;;
+  ;; Examples with wrapper of 
+  ;; objective-c implementation
+  ;;
+  (let ((speaker (cl-sp:make-speaker  "com.apple.speech.synthesis.voice.anna")))
+  	(cl-sp:register-will-speak-word-callback speaker (cffi:callback wsw-callback))
+  	(cl-sp:register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
+  	(cl-sp:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
+  	(cl-sp:set-voice-with speaker 7)
+  	(cl-sp:speak-with speaker "Test delegate.")
+  	(sleep 3)
+  	(cl-sp:set-voice-with speaker 7)
+  	(cl-sp:speak-with speaker "Next delegate.")
+	(cl-sp:cleanup)))
 
 (main)

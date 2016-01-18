@@ -1,0 +1,132 @@
+﻿////////////////////////////////////////////////
+//
+//  speak.cpp
+//  speak - c-  and cpp-interface for 
+//  creating cffi to lisp
+//
+//  Created by Edward Puccini on 17.01.16.
+//  Copyright (c) 2016 Edward Puccini. All rights reserved.
+//
+////////////////////////////////////////////////
+
+////////////////////////////////////////////////
+
+#include "Speaker.h"
+
+////////////////////////////////////////////////
+
+static ISpVoice *pVoice = NULL;
+
+////////////////////////////////////////////////
+
+BOOL APIENTRY DllMain(
+	HMODULE hModule, 
+	DWORD ul_reason_for_call, 
+	LPVOID lpReserved)
+{
+    switch (ul_reason_for_call)
+    {
+    case DLL_PROCESS_ATTACH:
+      //  For optimization.
+      DisableThreadLibraryCalls( hModule );
+      break;
+    case DLL_THREAD_ATTACH:
+		break;
+    case DLL_THREAD_DETACH:
+		break;
+    case DLL_PROCESS_DETACH:
+        break;
+    }
+	return TRUE;
+}
+
+////////////////////////////////////////////////
+//
+// Function to create Speaker instances
+// This is useful for handling different speakers
+// at once
+//
+
+void* make_speaker(char* speech)
+{
+	libspeak::Speaker *pSpeaker = new libspeak::Speaker(speech);
+	return (void*)pSpeaker;
+}
+
+void speak_with(void* speaker, char* text)
+{
+	libspeak::Speaker* pSpeaker = (libspeak::Speaker*)speaker;
+	pSpeaker->SpeakWithText(text);
+}
+
+void set_voice_with(void* speaker, int index)
+{
+}
+
+void cleanup_with(void* speaker)
+{
+	libspeak::Speaker* pSpeaker = (libspeak::Speaker*)speaker;
+	delete pSpeaker;
+}
+
+////////////////////////////////////////////////
+//
+// Lisp callbacks can be registered here and
+// will be called in Speaker-instance
+//
+void register_will_speak_word_callback(void* speaker, wsw_callback cb)
+{
+}
+
+void register_will_speak_phoneme_callback(void* speaker, wsp_callback cb)
+{
+}
+
+void register_did_finish_speaking_callback(void* speaker, dfs_callback cb)
+{
+}
+
+////////////////////////////////////////////////
+//
+// Function for fast setup speaking
+// Only single speaker possible, but
+// offering a simple c-interface
+//
+
+void init_with_speech(char* speech)
+{
+	if(SUCCEEDED(::CoInitialize(NULL)))
+	{
+		HRESULT hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void **)&pVoice);
+	}
+}
+
+void speak(char* text)
+{
+    if(pVoice != NULL)
+    {
+		LPCWSTR ttext = libspeak::GetWC(text);
+        HRESULT hr = pVoice->Speak(ttext, 0, NULL);
+    }
+    return;
+}
+
+void set_voice(int index)
+{
+}
+
+unsigned int available_voices_count(void)
+{
+	return 0;
+}
+
+void get_voice_name(unsigned int idx, char* pszOut)	
+{
+}
+
+void cleanup()
+{
+	::CoUninitialize();
+    pVoice->Release();
+    pVoice = NULL;
+}
