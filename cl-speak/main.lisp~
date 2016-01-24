@@ -59,14 +59,15 @@ all necessary files including packages"
   ;; 
   (cl-sp:init-with-speech "com.apple.speech.synthesis.voice.Alex")
 
-  (cl-sp:speak "One two three")
+  ;(cl-sp:speak "One two three)
   (sleep 2)
   (format t "Available-voices: ~D~%" (cl-sp:available-voices-count))
   (format t "Get-voice(~D): ~A~%" (cl-sp:get-voice-name 6) "")
   (cl-sp:set-voice 6)
-  (cl-sp:speak "Hallo Eddie")
+  (cl-sp:speak "Hallo Andy! Bist am schwitzen?")
   (sleep 1)
   (cl-sp:speak "Guten morgen.")
+  (cl-sp:cleanup)
   (sleep 2)
   ;(cl-sp:make-speaker nil)           ;; error test
   ;(cl-sp:speak-with nil "Text")      ;; "
@@ -80,10 +81,10 @@ all necessary files including packages"
   	(cl-sp:register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
   	(cl-sp:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
   	(cl-sp:set-voice-with speaker 7)
-  	(cl-sp:speak-with speaker "Test delegate.")
+  	(cl-sp:speak-with speaker "This delegate.")
   	(sleep 3)
   	(cl-sp:set-voice-with speaker 7)
   	(cl-sp:speak-with speaker "Next delegate.")
-	(cl-sp:cleanup)))
+	(cl-sp:cleanup-with speaker)))
 
 (main)
