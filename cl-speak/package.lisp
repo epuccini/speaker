@@ -8,8 +8,6 @@
 ; 
 ; -------------------------------------------------------------
 
-(in-package :common-lisp)
-
 (require 'cffi)
 
 (defpackage :cl-sp

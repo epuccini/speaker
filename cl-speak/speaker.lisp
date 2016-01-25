@@ -16,16 +16,23 @@
 ;; Setup library (platform specific)
 ;;----------------------------------
 
+#+darwin
 (define-foreign-library libspeak
-  (:darwin  (:or "libspeak.dylib" "/usr/local/lib/libspeak.dylib"))
-  (:windows (:or #P"libspeak.dll" #P"D:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll"))
-  (:unix (:or "libspeak.so" "/usr/local/lib/libspeak.so")))
+  (darwin  (:or "libspeak.dylib" "/usr/local/lib/libspeak.dylib")))
+
+#+windows
+(define-foreign-library libspeak
+  (:windows (:or #P"libspeak.dll" #P"d:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll")))
+
+#+linux
+(define-foreign-library libspeak
+  (:linux (:or "libspeak.so" "/usr/local/lib/libspeak.so")))
 
 #+darwin 
 (load-foreign-library "libspeak.dylib")
 
 #+windows
-(load-foreign-library #P"D:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll")
+(load-foreign-library #P"d:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll")
 
 #+linux
 (load-foreign-library "libspeak.so")
