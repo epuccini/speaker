@@ -15,25 +15,22 @@
 all necessary files including packages.
 Compile all files on C-c C-k in emacs/slime"
 
-	(defparameter *make-conf* "")
-	(defparameter *main-function* nil)
-	(defparameter *categories* nil)
-	(defparameter *sources* '())
-	(defparameter *make-filename* "make.conf")
-	(defparameter *app* "")
+	(defvar *make-conf* "")
+	(defvar *main-function* nil)
+	(defvar *categories* nil)
+	(defvar *sources* '())
+	(defvar *make-filename* "make.conf")
+	(defvar *app* "")
 
 	; -------------------------------------------------------------
 
 	(defmacro build-files (directory &rest forms)
 	"Macro for load and compile. Just list some files and they
 	get compiled and loaded."
-	  `(progn
+	`(progn
 		,@(loop for f in forms collect 
 				`(load (compile-file (merge-pathnames ,directory ,f))))))
-	;; Example:
-	;; (build-files *default-pathname-defaults*
-	;;              "example/test1.lisp"
-	;;              "example/main.lisp")
+
 
 	(defun quickload-list (systems)
 	  "Macro to quickload a system."
@@ -44,7 +41,9 @@ Compile all files on C-c C-k in emacs/slime"
 					(ql:quickload s)
 					(format t "~A..." s)) systems))
 		(error (condition)
-		  (format t "Error in quickload-list! ~A." condition))))
+		  (write-line (format nil "Error in quickload-list! ~A." condition) 
+					  common-lisp:*error-output*))))
+
 
 	(defun require-list (packages)
 	  "Function require a list of packages."
@@ -55,11 +54,12 @@ Compile all files on C-c C-k in emacs/slime"
 					  (require p)
 					  (format t "~A..." p)) packages))
 		(error (condition)
-		  (format t "Error in require-list! ~A." condition))))
+		  (write-line (format nil "Error in require-list! ~A." condition) 
+					  common-lisp:*error-output*))))
 	
 	#+clisp
-	(defun require-list (packages)
-	  (print "No need to require in CLisp"))
+	(defun require-list (packages)n
+	  (write-line "No need to require in CLisp" common-lisp:*error-output*))
 
 
 	(defun load-config ()
@@ -92,8 +92,9 @@ Compile all files on C-c C-k in emacs/slime"
 				 (format t "Compiling file ~A.~%" file)
 				 (load (compile-file file)))
 			   (getf *categories* category)) t)
-	   (error (condition)
-			  (format t "Error in cbuild! ~A." condition))))
+		(error (condition)
+		  (write-line (format nil "Error in cbuild! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 	(defun build ()
 	  "Load and compile all files in all categories."
@@ -105,7 +106,8 @@ Compile all files on C-c C-k in emacs/slime"
 						(format t "Building category ~A.~%" category)
 						(cbuild category)))))
 		(error (condition)
-		  (format t "Error in build! ~A." condition))))
+		  (write-line (format nil "Error in build! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 
 	#+sbcl 
@@ -117,7 +119,8 @@ Compile all files on C-c C-k in emacs/slime"
 							  :compression t 
 							  :toplevel *main-function*)
 		(error (condition)
-		  (format t "Error in save-bin! ~A." condition))))
+		  (write-line (format nil "Error in save-bin! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 	#+cmu 
 	(defun save-bin ()
@@ -127,7 +130,8 @@ Compile all files on C-c C-k in emacs/slime"
 								 :executable t 
 								 :init-function *main-function*)
 		(error (condition)
-		  (format t "Error in save-bin! ~A." condition))))
+		  (write-line (format nil "Error in save-bin! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 	#+(or openmcl ccl) 
 	(defun save-bin ()
@@ -143,7 +147,8 @@ Compile all files on C-c C-k in emacs/slime"
 								   :application-class 'ccl::application
 								   :toplevel-function *main-function*))
 		(error (condition)
-		  (format t "Error in save-bin! ~A." condition))))
+		  (write-line (format nil "Error in save-bin! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 	#+ecl 
 	(defun save-bin ()
@@ -151,7 +156,8 @@ Compile all files on C-c C-k in emacs/slime"
 	  (handler-case
 		  (c:build-program *app*)
 		(error (condition)
-		  (format t "Error in save-bin! ~A." condition))))
+		  (write-line (format nil "Error in save-bin! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 
 	#+clisp 
@@ -163,7 +169,8 @@ Compile all files on C-c C-k in emacs/slime"
 						   :verbose t 
 						   :init-function *main-function*)
 		(error (condition)
-		  (format t "Error in save-bin! ~A." condition))))
+		  (write-line (format nil "Error in save-bin! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 
 	(defun execute-with (shell-call command)
@@ -175,7 +182,8 @@ with the function in 'shell-call'."
 			(format t "Command returned with ~A~%"
 					(funcall shell-call command)))
 		(error (condition)
-		  (format t "Error in execute: ~A~%" condition))))
+		  (write-line (format nil "Error in execute-with! ~A." condition) 
+					  common-lisp:*error-output*))))
 
 
 	(defun execute-when (at)
@@ -194,7 +202,7 @@ with the function in 'shell-call'."
 	#+cmu
 	(defun execute (command)
 	  "Platform specific shell-call with 'command'."
-		(execute-with #'asdf:run-shell-command command))
+	  (execute-with #'asdf:run-shell-command command))
 
 	#+ecl
 	(defun execute (command)
@@ -205,13 +213,12 @@ with the function in 'shell-call'."
 	(EXT:WITHOUT-PACKAGE-LOCK ("EXT")
 	  (defun execute (command)
 		"Platform specific shell-call with 'command'."
-		(execute-with #'trivial-shell:shell-command command)))
+		(execute-with #'asdf:run-shell-command command)))
 
 	#+(or openmcl ccl)
 	(defun execute (command)
 	  "Platform specific shell-call with 'command'."
-	  (execute-with #'trivial-shell:shell-command command))
-
+	  (execute-with #'asdf:run-shell-command command))
 
 
 	(defun run ()
@@ -220,14 +227,14 @@ with the function in 'shell-call'."
 			 (funcall (symbol-function 
 					   (find-symbol (string-upcase *main-function*))))))
 		(error (condition)
-		  (format t "Error! ~A~%" condition))))
+		  (write-line (format nil "Error in run! ~A." condition) 
+					  common-lisp:*error-output*))))
 
   (print "Make startup...")
   ;; Load configuration
   (setup)
   ;; Quickload systems
-  (quickload-list (getf *make-conf* :systems))
-  ;; Require packages
+  (quickload-list (getf *make-conf* :systems))  ;; Require packages
   (require-list (getf *make-conf* :packages))
   ;; Execute command if 'before'
   (execute-when :before)
