@@ -3,9 +3,9 @@
 ; -------------------------------------------------------------
 ; Kind of make for common lisp
 ; -------------------------------------------------------------
-; file: make.lisp 
+; file: spin.lisp 
 ; -------------------------------------------------------------
-; make - compile, load and run
+; spin - compile, load and run
 ; Compile this file and every other needed file gets compiled.
 ; On error check path in compile-files
 ; -------------------------------------------------------------
@@ -15,11 +15,11 @@
 all necessary files including packages.
 Compile all files on C-c C-k in emacs/slime"
 
-	(defvar *make-conf* "")
+	(defvar *spin-conf* "")
 	(defvar *main-function* nil)
 	(defvar *categories* nil)
 	(defvar *sources* '())
-	(defvar *make-filename* "make.conf")
+	(defvar *spin-filename* "spin.conf")
 	(defvar *app* "")
 
 	; -------------------------------------------------------------
@@ -64,25 +64,25 @@ Compile all files on C-c C-k in emacs/slime"
 
 	(defun load-config ()
 	  (let ((content 
-			 (with-open-file (stream *make-filename* :direction :input)
+			 (with-open-file (stream *spin-filename* :direction :input)
 							 (read stream))))
 		content))
 
 	(defun setup ()
 	  "This function has side effects and sets the
 	globals with valid configuration properties."
-	  (setq *make-filename* (merge-pathnames 
-							 *default-pathname-defaults* "make.conf"))
-	  (format t "filename '~A' set...~%" *make-filename*)
-	  (setq *make-conf* (load-config))
+	  (setq *spin-filename* (merge-pathnames 
+							 *default-pathname-defaults* "spin.conf"))
+	  (format t "filename '~A' set...~%" *spin-filename*)
+	  (setq *spin-conf* (load-config))
 	  (format t "Config read...~%")
-	  (setq *categories* (getf *make-conf* :categories))
+	  (setq *categories* (getf *spin-conf* :categories))
 	  (mapc #'pprint *categories*)
-	  (setq *main-function* (getf *make-conf* :main))
-	  (setq *app* (getf *make-conf* :app)))
+	  (setq *main-function* (getf *spin-conf* :main))
+	  (setq *app* (getf *spin-conf* :app)))
 
 
-	(defun cbuild (category)
+	(defun category (category)
 	  "Load and compile all files in given
 	category."
 	  (declare (keyword category))
@@ -93,7 +93,7 @@ Compile all files on C-c C-k in emacs/slime"
 				 (load (compile-file file)))
 			   (getf *categories* category)) t)
 		(error (condition)
-		  (write-line (format nil "Error in cbuild! ~A." condition) 
+		  (write-line (format nil "Error in category! ~A." condition) 
 					  common-lisp:*error-output*))))
 
 	(defun build ()
@@ -101,10 +101,10 @@ Compile all files on C-c C-k in emacs/slime"
 	  (handler-case 
 		  (progn
 			(format t "~%Building ~A...~%" *app*)
-			(loop for category in *categories* do
-				 (cond ((getf *categories* category) 
-						(format t "Building category ~A.~%" category)
-						(cbuild category)))))
+			(loop for c in *categories* do
+				 (cond ((getf *categories* c) 
+						(format t "Building category ~A.~%" c)
+						(category c)))))
 		(error (condition)
 		  (write-line (format nil "Error in build! ~A." condition) 
 					  common-lisp:*error-output*))))
@@ -187,7 +187,7 @@ with the function in 'shell-call'."
 
 
 	(defun execute-when (at)
-	  (let ((commands (getf *make-conf* at)))
+	  (let ((commands (getf *spin-conf* at)))
 		(mapc (lambda (c)
 				(format t "~%Try to execute ~A with ~A~%" at c)
 				(cond (c
@@ -230,12 +230,12 @@ with the function in 'shell-call'."
 		  (write-line (format nil "Error in run! ~A." condition) 
 					  common-lisp:*error-output*))))
 
-  (print "Make startup...")
+  (print "Spin startup...")
   ;; Load configuration
   (setup)
   ;; Quickload systems
-  (quickload-list (getf *make-conf* :systems))  ;; Require packages
-  (require-list (getf *make-conf* :packages))
+  (quickload-list (getf *spin-conf* :systems))  ;; Require packages
+  (require-list (getf *spin-conf* :packages))
   ;; Execute command if 'before'
   (execute-when :before)
   ;; compile everything
@@ -243,7 +243,7 @@ with the function in 'shell-call'."
   ;; Execute command if 'after'
   (execute-when :after)
   ;; End: run program if main-key set
-  (format t "Building  complete. Starting ~A:" *app*)
-  (cond ((and (getf *make-conf* :run) (equal (getf *make-conf* :run) t))
+  (format t "Building  complete. Starting ~A:~%~%" *app*)
+  (cond ((and (getf *spin-conf* :run) (equal (getf *spin-conf* :run) t))
 		 (run))))
 
