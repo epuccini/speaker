@@ -10,7 +10,7 @@
 
 (require 'cffi)
 
-(defpackage :cl-sp
+(defpackage :speaker
   (:use #:cl #:cffi) 
   (:export
    #:init-with-speech

@@ -8,7 +8,7 @@
 ; Define library exampple callbacks and c-function-wrapper
 ; -------------------------------------------------------------
 
-(in-package :cl-sp)
+(in-package :speaker)
 
 (require 'cffi)
 
