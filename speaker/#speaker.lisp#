@@ -298,7 +298,7 @@ runloop."
   
 (defmacro disable-async-syntax ()
   "Disable special-character '°' syntax."
-  `(eval-when (:load-toplevel :compile-toplevel :execute)
+  `(eval-when (:load-toplevel :compile-slitoplevel :execute)
      (setq *readtable* (pop speaker:*previous-readtables*))))
 
 

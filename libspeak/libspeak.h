@@ -46,7 +46,7 @@ extern "C"
     LIBRARY_EXPORT unsigned int available_voices_count(void);
     LIBRARY_EXPORT void get_voice_name(unsigned int idx, char* pszOut);
     LIBRARY_EXPORT void cleanup_speaker(void);
-    
+    LIBRARY_EXPORT void mainloop_speaker(void* speaker);
     
     ///////////////
     // Speaker OO
@@ -68,6 +68,7 @@ extern "C"
     LIBRARY_EXPORT void stop_listening(void* listener);
     LIBRARY_EXPORT void add_command(void* listener, char*);
     LIBRARY_EXPORT void cleanup_listener(void* listener);
+    LIBRARY_EXPORT void mainloop_listener(void* listener);
     
     LIBRARY_EXPORT void register_did_recognize_command_callback(void* listener, drc_callback cb);
     

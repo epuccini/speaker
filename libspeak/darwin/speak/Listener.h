@@ -20,6 +20,7 @@
     NSMutableArray * _commands;
     NSMutableDictionary * _command_dispatch;
     BOOL _done;
+    NSTimer *_timer;
     
     drc_callback did_recognize_command_callback;
 }
@@ -39,5 +40,5 @@
 @property (nonatomic, retain)NSMutableArray* commands;
 @property (nonatomic, retain)NSMutableDictionary* command_dispatch;
 @property (nonatomic, assign)BOOL done;
-
+@property (atomic, retain)NSTimer* timer;
 @end

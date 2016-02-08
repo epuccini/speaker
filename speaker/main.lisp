@@ -3,7 +3,7 @@
 ; -------------------------------------------------------------
 ; Speaker library make and loader
 ; -------------------------------------------------------------
-; file: make.lisp 
+; file: main.lisp 
 ; -------------------------------------------------------------
 ; make - compile, load and run
 ; Compile this file and every other needed file gets compiled.
@@ -13,6 +13,8 @@
 ; -------------------------------------------------------------
 
 (in-package :speaker)
+
+(require 'bordeaux-threads)
 
 ;; Example application
 
@@ -28,8 +30,9 @@
 (cffi:defcallback drc-callback :void ()
   (print "Called back and did recognizeh!"))
 
+(enable-async-syntax)
 
-(defun main ()
+(defun speaker-test (speaker)
   ;; -------------------------------
   ;;
   ;; Examples with plain c interface
@@ -51,26 +54,38 @@
   ;; Examples with wrapper of 
   ;; objective-c implementation
   ;;
-  (let ((speaker (make-speaker)))
-  	(register-will-speak-word-callback speaker (cffi:callback wsw-callback))
-  	(register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
-  	(register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
-  	(set-voice-with speaker 7)
-  	(speak-with speaker "This is Voice 7.")
-  	(sleep 3)
-  	(set-voice-with speaker 8)
-  	(speak-with speaker "Another Voice 8.")
-	(cleanup-with speaker))
-  (let ((listener (make-listener)))
-  	(register-did-recognize-command-callback listener (cffi:callback drc-callback))
-	(print "Listener...")
-	(add-command listener "hey")
-	(add-command listener "run")
-	(add-command listener "obey")
-	(start-listening listener)
-	(print "Start listening")
-	(sleep 5)
-	(print "End listening")
-	(stop-listening listener)))
+  (register-will-speak-word-callback speaker (cffi:callback wsw-callback))
+  (register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
+  (register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
+  (set-voice-with speaker 11)
+  (speak-with speaker "Hallo Edward.")
+  (sleep 2)
+  (set-voice-with speaker 7)
+  (speak-with speaker "This is voice 7.")
+  (sleep 3)
+  (set-voice-with speaker 19)
+  (speak-with speaker "Another voice is speaking 59.")
+  (cleanup-with speaker))
+
+(defun listener-test (listener)
+  (register-did-recognize-command-callback listener (cffi:callback drc-callback))
+  (print "Listener...")
+  (add-command listener "hey")
+  (add-command listener "run")
+  (add-command listener "test")
+  (start-listening listener)
+  (print "Start listening")
+  (sleep 15)
+  (print "End listening")
+  (stop-listening listener)
+  (terpri))
+
+(defun main ()
+    (let ((listener (make-listener))
+		  (speaker (make-speaker)))
+	  (declare (ignore listener))
+	  °(speaker-test speaker)
+	  (mainloop-speaker speaker)))
 
 (main)
+

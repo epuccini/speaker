@@ -92,10 +92,15 @@ void cleanup_with(void* speaker)
     speaker = NULL;
 }
 
+void mainloop_speaker(void* speaker)
+{
+    [(__bridge Speaker*)speaker mainLoop];
+}
+
 ////////////////////////////////////////////////
 //
 // Lisp callbacks can be registered here and
-// will be called in Speaker-instance
+// will be called in Speaker-instance*previous-readtables*
 //
 void register_will_speak_word_callback(void* speaker, wsw_callback cb)
 {
@@ -144,6 +149,11 @@ void cleanup_listener(void* listener)
 {
     [(__bridge Listener*)listener setDone:YES];
    listener = NULL;
+}
+
+void mainloop_listener(void* listener)
+{
+    [(__bridge Listener*)listener mainLoop];
 }
 
 ////////////////////////////////////////////////

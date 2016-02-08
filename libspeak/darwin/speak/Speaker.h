@@ -20,7 +20,8 @@
     NSSpeechSynthesizer* _synth;
     unsigned int _voiceid;
     BOOL _done;
-
+    NSTimer *_timer;
+    
     wsw_callback will_speak_word_callback;
     wsp_callback will_speak_phoneme_callback;
     dfs_callback did_finish_speaking_callback;
@@ -29,6 +30,7 @@
 @property (nonatomic, retain)NSSpeechSynthesizer* synth;
 @property (nonatomic)unsigned int voiceid;
 @property (nonatomic, assign)BOOL done;
+@property (nonatomic, retain)NSTimer* timer;
 
 - (id)init;
 - (void)mainLoop;

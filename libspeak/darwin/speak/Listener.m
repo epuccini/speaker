@@ -18,6 +18,7 @@
 @synthesize command_dispatch=_command_dispatch;
 @synthesize speechRecognizer=_speechRecognizer;
 @synthesize done=_done;
+@synthesize timer=_timer;
 
 - (id)init
 {
@@ -27,27 +28,24 @@
     
     [_speechRecognizer setCommands:[_commands copy]];
     [_speechRecognizer setDelegate:self];
-    [_speechRecognizer setListensInForegroundOnly:YES];
+    [_speechRecognizer setListensInForegroundOnly:NO];
     [_speechRecognizer setBlocksOtherRecognizers:YES];
     _done = NO;
     
+    // set delegate for callbacks
+    [_speechRecognizer setDelegate:self];
+
     // start runloop
-    [self performSelectorInBackground:@selector(mainLoop) withObject:nil];
-    return self;
-}
-
-- (void)speechRecognizer:(NSSpeechRecognizer *)sender didRecognizeCommand:(id)aCmd {
+    [[NSRunLoop currentRunLoop] run];
+    //[self performSelectorInBackground:@selector(mainLoop) withObject:self];
     
-    for (int i = 0; i < sizeof(_commands); i++) {
-        NSString* command_string = _commands[i];
-
-        if ([(NSString *)aCmd isEqualToString:command_string]) {
-            char pszForeignText[1024];
-            strcpy(pszForeignText, [command_string
-                                        cStringUsingEncoding:[NSString defaultCStringEncoding]]);
-            (*did_recognize_command_callback)(pszForeignText);
-        }
-    }
+//    NSLog(@"Creating timer...");
+//    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0
+//                                              target:self
+//                                            selector:@selector(mainLoop:)
+//                                            userInfo:nil
+//                                             repeats:YES];
+    return self;
 }
 
 - (void)mainLoop
@@ -56,18 +54,35 @@
     do
     {
         // Start the run loop but return after each source is handled.
-        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 10, YES);
+        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
         
         // If a source explicitly stopped the run loop, or if there are no
         // sources or timers, go ahead and exit.
         if (result == kCFRunLoopRunStopped)// || (result == kCFRunLoopRunFinished))
             _done = YES;
         // Check for any other exit conditions here and set the
-                // done variable as needed.
+        // done variable as needed.
     }
     while (!_done);
     
     // Clean up code here. Be sure to release any allocated autorelease pools.
+}
+
+- (void)speechRecognizer:(NSSpeechRecognizer *)sender
+     didRecognizeCommand:(NSString *)command
+{
+    NSLog(@"Speech recognized...");
+    
+    for (int i = 0; i < sizeof(_commands); i++) {
+        NSString* command_string = _commands[i];
+
+        if ([command isEqualToString:command_string]) {
+            char pszForeignText[1024];
+            strcpy(pszForeignText, [command_string
+                                        cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+            (*did_recognize_command_callback)(pszForeignText);
+        }
+    }
 }
 
 - (void)registerDidRecognizeCommand:(drc_callback)cb
