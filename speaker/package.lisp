@@ -8,23 +8,24 @@
 ; 
 ; -------------------------------------------------------------
 
-(in-package :common-lisp)
-
 (require 'cffi)
 
-(defpackage :cl-sp
+(defpackage :speaker
   (:use #:cl #:cffi) 
   (:export
-   #:init-with-speech
+   #:main
+   #:init-speaker
    #:speak
    #:start-speaking-string
    #:available-voices-count
    #:set-voice
    #:get-voice-name
+   #:cleanup
    #:make-speaker
    #:speak-with
    #:set-voice-with
-   #:cleanup
+   #:cleanup-with
    #:register-will-speak-word-callback
    #:register-will-speak-phoneme-callback
    #:register-did-finish-speaking-callback))
+0

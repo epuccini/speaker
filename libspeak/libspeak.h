@@ -35,7 +35,7 @@ typedef void(*dfs_callback)(void);
 extern "C"
 {
 #endif
-    LIBRARY_EXPORT void* make_speaker(char* speech);
+    LIBRARY_EXPORT void* make_speaker();
     LIBRARY_EXPORT void speak_with(void* speaker, char* text);
     LIBRARY_EXPORT void set_voice_with(void* speaker, int index);
     LIBRARY_EXPORT void cleanup_with(void* speaker);
@@ -44,7 +44,7 @@ extern "C"
     LIBRARY_EXPORT void register_will_speak_phoneme_callback(void* speaker, wsp_callback cb);
     LIBRARY_EXPORT void register_did_finish_speaking_callback(void* speaker, dfs_callback cb);
     
-    LIBRARY_EXPORT void init_with_speech(char* speech);
+    LIBRARY_EXPORT void init_speaker();
     LIBRARY_EXPORT void speak(char* text);
     LIBRARY_EXPORT void set_voice(int index);
     LIBRARY_EXPORT unsigned int available_voices_count(void);

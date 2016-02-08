@@ -27,7 +27,7 @@
 @property (nonatomic, retain)NSSpeechSynthesizer* synth;
 @property (nonatomic)unsigned int voiceid;
 
-- (id)initWithSpeech:(char*)speech;
+- (id)init_speaker;
 - (IBAction)speakWithText:(NSString*)text;
 
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb;

@@ -25,9 +25,9 @@ const char* pszVoiceAlex = "com.apple.speech.synthesis.voice.Alex";
 // This is useful for handling different speakers
 // at once
 //
-void* make_speaker(char* speech)
+void* make_speaker()
 {
-    Speaker* speaker = [[Speaker alloc] initWithSpeech:speech];
+    Speaker* speaker = [[Speaker alloc] init_speaker];
     return (__bridge void*)speaker;
 }
 
@@ -74,10 +74,11 @@ void register_did_finish_speaking_callback(void* speaker, dfs_callback cb)
 // Only single speaker possible, but
 // offering a simple c-interface
 //
-void init_with_speech(char* speech)
+void init_speaker()
 {
     synth =[[NSSpeechSynthesizer alloc] initWithVoice:
-            [[NSString alloc] initWithCString:speech encoding: NSASCIIStringEncoding]];
+            [[NSString alloc] initWithCString:"com.apple.speech.synthesis.voice.anna"
+                                     encoding: NSASCIIStringEncoding]];
 }
 
 void speak(char* text)

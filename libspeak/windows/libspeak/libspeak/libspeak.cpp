@@ -1,4 +1,4 @@
-﻿////////////////////////////////////////////////
+////////////////////////////////////////////////
 //
 //  speak.cpp
 //  speak - c-  and cpp-interface for 
@@ -47,7 +47,7 @@ BOOL APIENTRY DllMain(
 // at once
 //
 
-void* make_speaker(char* speech)
+void* make_speaker()
 {
 	libspeak::Speaker *pSpeaker = new libspeak::Speaker(speech);
 	return (void*)pSpeaker;
@@ -93,7 +93,7 @@ void register_did_finish_speaking_callback(void* speaker, dfs_callback cb)
 // offering a simple c-interface
 //
 
-void init_with_speech(char* speech)
+void init-speaker()
 {
 	if(SUCCEEDED(::CoInitialize(NULL)))
 	{

@@ -17,12 +17,12 @@
 @synthesize synth;
 @synthesize voiceid;
 
-- (id)initWithSpeech:(char*)speech {
+- (id)init_speaker {
     self = [super init];
     if (self) {
         // create speech-synth
-        synth = [[NSSpeechSynthesizer alloc] initWithVoice:
-                 [[NSString alloc] initWithCString:speech encoding: NSASCIIStringEncoding]];
+        synth = [[NSSpeechSynthesizer alloc] initWithVoice:[[NSString alloc] initWithCString:"com.apple.speech.synthesis.voice.anna"
+                                                                                    encoding: NSASCIIStringEncoding]];
             
         //synth is an ivar
         [synth setDelegate:self];
