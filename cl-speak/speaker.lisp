@@ -61,12 +61,33 @@
 			  "CL-Speak: error in 'init-with-speech': ~A~%" condition))))
 
 
-(defun speak(text)
+(defun format-with-list (fmt-msg args)
+  "Format with argument-list."
+  (eval
+   `(format nil ,fmt-msg ,@args)))
+
+(defun collect-args (args)
+  "Create a string out of args."
+  (let ((message "")
+		(arg-list '()))
+	(mapc (lambda (arg)
+			(cond ((stringp arg)
+				   (setq message (concatenate 'string
+											  message arg)))
+				  ((not (stringp arg))
+				   (progn
+					 (setq message (concatenate 'string 
+												message "~A"))
+					 (push arg arg-list))))) args)
+	(format-with-list message arg-list)))
+
+(defun speak(&rest args)
   "Speaks a lisp-string text. Initialization is needed."
   (handler-case
-	  (with-foreign-strings ((foreign-text text)
-							 (foreign-speech "com.apple.speech.synthesis.voice.Alex"))
-		(foreign-funcall "speak" :string foreign-text :void))
+   (let ((text (collect-args args))) 
+	 (with-foreign-strings ((foreign-text text)
+							(foreign-speech "com.apple.speech.synthesis.voice.Alex"))
+						   (foreign-funcall "speak" :string foreign-text :void)))
 	(error (condition)
 	  (format *error-output* 
 			  "CL-Speak: error in 'speak': ~A~%" condition))))
@@ -129,13 +150,14 @@ created synth instance with given speech."
 	(error (condition)
 	  (format *error-output* "CL-Speak: error in 'make-speaker': ~A~%" condition))))
 
-(defun speak-with (speaker text)
+(defun speak-with (speaker &rest args)
   "Speak text with synth container 'Speaker'."
-  (handler-case 
-	  (with-foreign-string (foreign-text text)
-		(foreign-funcall "speak_with" :pointer 
-						 speaker :string 
-						 foreign-text :void))
+  (handler-case
+   (let ((text (collect-args args)))
+	 (with-foreign-string (foreign-text text)
+						  (foreign-funcall "speak_with" :pointer 
+										   speaker :string 
+										   foreign-text :void)))
 	(error (condition) 
 	  (format *error-output* "CL-Speak: error in 'speak-with': ~A~%" condition))))
 
