@@ -16,6 +16,8 @@ typedef void(*wsw_callback)(char*);
 typedef void(*wsp_callback)(short);
 typedef void(*dfs_callback)(void);
 
+typedef void(*drc_callback)(char*);
+
 ////////////////////////////////////////////////
 // Basic c interface to wrap objective-c 
 // for direct cffi access
@@ -35,6 +37,20 @@ typedef void(*dfs_callback)(void);
 extern "C"
 {
 #endif
+    ///////////
+    // Speaker
+    //
+    LIBRARY_EXPORT void init_speaker();
+    LIBRARY_EXPORT void speak(char* text);
+    LIBRARY_EXPORT void set_voice(int index);
+    LIBRARY_EXPORT unsigned int available_voices_count(void);
+    LIBRARY_EXPORT void get_voice_name(unsigned int idx, char* pszOut);
+    LIBRARY_EXPORT void cleanup_speaker(void);
+    
+    
+    ///////////////
+    // Speaker OO
+    //
     LIBRARY_EXPORT void* make_speaker();
     LIBRARY_EXPORT void speak_with(void* speaker, char* text);
     LIBRARY_EXPORT void set_voice_with(void* speaker, int index);
@@ -44,12 +60,19 @@ extern "C"
     LIBRARY_EXPORT void register_will_speak_phoneme_callback(void* speaker, wsp_callback cb);
     LIBRARY_EXPORT void register_did_finish_speaking_callback(void* speaker, dfs_callback cb);
     
-    LIBRARY_EXPORT void init_speaker();
-    LIBRARY_EXPORT void speak(char* text);
-    LIBRARY_EXPORT void set_voice(int index);
-    LIBRARY_EXPORT unsigned int available_voices_count(void);
-    LIBRARY_EXPORT void get_voice_name(unsigned int idx, char* pszOut);
-    LIBRARY_EXPORT void cleanup(void);
+    /////////////////
+    // Recognizer OO
+    //
+    LIBRARY_EXPORT void* make_listener();
+    LIBRARY_EXPORT void start_listening(void* listener);
+    LIBRARY_EXPORT void stop_listening(void* listener);
+    LIBRARY_EXPORT void add_command(void* listener, char*);
+    LIBRARY_EXPORT void cleanup_listener(void* listener);
+    
+    LIBRARY_EXPORT void register_did_recognize_command_callback(void* listener, drc_callback cb);
+    
+    
+    
 #ifdef _WINDLL
 }
 #endif

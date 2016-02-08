@@ -25,41 +25,52 @@
 (cffi:defcallback dfs-callback :void ()
   (print "Called back and did finish!"))
 
+(cffi:defcallback drc-callback :void ()
+  (print "Called back and did recognizeh!"))
+
 
 (defun main ()
   ;; -------------------------------
   ;;
   ;; Examples with plain c interface
   ;; 
-  (init-speaker)
-
-  ;(speaker:speak "One two three")
-  ;(sleep 2)
-  (format t "Available-voices: ~D~%" (speaker:available-voices-count))
-  (format t "Get-voice(~D): ~A~%" (speaker:get-voice-name 6) "")
-  (sleep 1)
-  (speaker:speak "Guten Morgen.")
-  (sleep 2)
-  (speaker:set-voice 2)
-  (speaker:speak "Hello world?")
-  (speaker:cleanup)
-  (sleep 2)
-  ;(speaker:make-speaker nil)           ;; error test
-  ;(speaker:speak-with nil "Text")      ;; "
+  ;; (init-speaker)
+  ;; (format t "Available-voices: ~D~%" (available-voices-count))
+  ;; (format t "Get-voice(~D): ~A~%" (get-voice-name 6) "")
+  ;; (sleep 1)
+  ;; (speak "Guten Morgen.")
+  ;; (sleep 2)
+  ;; (set-voice 2)
+  ;; (speak "Hello world?")
+  ;; (cleanup-speaker)
+  ;; (sleep 2)
+  ;(make-speaker nil)           ;; error test
+  ;(speak-with nil "Text")      ;; "
   ;; -------------------------------
   ;;
   ;; Examples with wrapper of 
   ;; objective-c implementation
   ;;
-  (let ((speaker (speaker:make-speaker)))
-  	(speaker:register-will-speak-word-callback speaker (cffi:callback wsw-callback))
-  	(speaker:register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
-  	(speaker:register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
-  	(speaker:set-voice-with speaker 7)
-  	(speaker:speak-with speaker "This is Voice 7.")
+  (let ((speaker (make-speaker)))
+  	(register-will-speak-word-callback speaker (cffi:callback wsw-callback))
+  	(register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
+  	(register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
+  	(set-voice-with speaker 7)
+  	(speak-with speaker "This is Voice 7.")
   	(sleep 3)
-  	(speaker:set-voice-with speaker 8)
-  	(speaker:speak-with speaker "Another Voice 8.")
-	(speaker:cleanup-with speaker)))
+  	(set-voice-with speaker 8)
+  	(speak-with speaker "Another Voice 8.")
+	(cleanup-with speaker))
+  (let ((listener (make-listener)))
+  	(register-did-recognize-command-callback listener (cffi:callback drc-callback))
+	(print "Listener...")
+	(add-command listener "hey")
+	(add-command listener "run")
+	(add-command listener "obey")
+	(start-listening listener)
+	(print "Start listening")
+	(sleep 5)
+	(print "End listening")
+	(stop-listening listener)))
 
 (main)

@@ -17,8 +17,10 @@
 ////////////////////////////////////////////////
 
 @interface Speaker : NSObject<NSSpeechSynthesizerDelegate> {
-    NSSpeechSynthesizer* synth;
-    unsigned int voiceid;
+    NSSpeechSynthesizer* _synth;
+    unsigned int _voiceid;
+    BOOL _done;
+
     wsw_callback will_speak_word_callback;
     wsp_callback will_speak_phoneme_callback;
     dfs_callback did_finish_speaking_callback;
@@ -26,8 +28,11 @@
 
 @property (nonatomic, retain)NSSpeechSynthesizer* synth;
 @property (nonatomic)unsigned int voiceid;
+@property (nonatomic, assign)BOOL done;
 
-- (id)init_speaker;
+- (id)init;
+- (void)mainLoop;
+
 - (IBAction)speakWithText:(NSString*)text;
 
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb;

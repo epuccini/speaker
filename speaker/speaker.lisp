@@ -122,13 +122,13 @@
 	  (format *error-output* 
 			  "CL-Speak: error in 'get-voice-name': ~A~%" condition))))
 
-(defun cleanup ()
+(defun cleanup-speaker ()
   "Cleanup. Expecially useful for com-connection in windows."
   (handler-case
-	  (foreign-funcall "cleanup" :void)
+	  (foreign-funcall "cleanup_speaker" :void)
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'cleanup': ~A~%" condition))))
+			  "CL-Speak: error in 'cleanup-speaker': ~A~%" condition))))
   
 
 
@@ -207,3 +207,56 @@ created synth instance with given speech."
 	  (format *error-output* 
 			  "CL-Speak: error in 'register-did-finish-speaking-cakkback': ~A~%" condition))))
 
+; -------------------------------------------------------------
+; These function wrap objective-c class methods
+; First call have to be make-listener to create
+; a Listener-class instance
+; -------------------------------------------------------------
+
+(defun make-listener ()
+  "Create listener instance and initialize
+runloop."
+  (handler-case 
+	  (let ((speaker (foreign-funcall "make_listener" :pointer)))
+		speaker)
+  (error (condition)
+		 (format *error-output* "CL-Speak: error in 'make-listener': ~A~%" condition))))
+
+
+(defun start-listening (listener)
+  "Start speech recognizing."
+  (handler-case 
+	  (let ((listener (foreign-funcall "start_listening" :pointer listener :void)))
+		listener)
+  (error (condition)
+		 (format *error-output* "CL-Speak: error in 'start_listening': ~A~%" condition))))
+
+(defun stop-listening (listener)
+  "Stop speech recognizing."
+  (handler-case 
+	  (let ((listener (foreign-funcall "stop_listening" :pointer listener :void)))
+		listener)
+  (error (condition)
+		 (format *error-output* "CL-Speak: error in 'stop_listening': ~A~%" condition))))
+
+(defun add-command (listener command)
+  "Add command for recoginition."
+  (handler-case
+	  (with-foreign-strings ((foreign-command command))
+		(foreign-funcall "add_command" :pointer listener :string foreign-command :void))
+	(error (condition)
+	  (format *error-output* 
+			  "CL-Speak: error in 'add-command': ~A~%" condition))))
+  
+;; ------------------------------------------------------
+;; Lisp callbacks are called within objective-c delegates
+;; ------------------------------------------------------
+
+(defun register-did-recognize-command-callback (speaker callback)
+  "Register callback for 'did recognize command' delegate."
+  (handler-case
+	  (foreign-funcall "register_did_recognize_command_callback" 
+					   :pointer speaker :pointer callback :void)
+	(error (condition) 
+	  (format *error-output* 
+			  "CL-Speak: error in 'register-did-recognize-command-callback': ~A~%" condition))))

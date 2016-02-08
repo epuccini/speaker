@@ -14,22 +14,50 @@
 
 @implementation Speaker
 
-@synthesize synth;
-@synthesize voiceid;
+@synthesize synth=_synth;
+@synthesize voiceid=_voiceid;
+@synthesize done=_done;
 
-- (id)init_speaker {
+- (id)init {
     self = [super init];
     if (self) {
         // create speech-synth
-        synth = [[NSSpeechSynthesizer alloc] initWithVoice:[[NSString alloc] initWithCString:"com.apple.speech.synthesis.voice.anna"
+        _synth = [[NSSpeechSynthesizer alloc] initWithVoice:[[NSString alloc] initWithCString:"com.apple.speech.synthesis.voice.anna"
                                                                                     encoding: NSASCIIStringEncoding]];
             
         //synth is an ivar
-        [synth setDelegate:self];
+        [_synth setDelegate:self];
 
-        voiceid = 6;
+        _voiceid = 6;
+        _done = NO;
+        
+        // start runloop
+        [self performSelectorInBackground:@selector(mainLoop) withObject:nil];
     }
     return self;
+}
+
+- (void)mainLoop
+{
+    // Set up an autorelease pool here if not using garbage collection.
+    BOOL done = NO;
+    
+    // Add your sources or timers to the run loop and do any other setup.
+    do
+    {
+        // Start the run loop but return after each source is handled.
+        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 10, YES);
+        
+        // If a source explicitly stopped the run loop, or if there are no
+        // sources or timers, go ahead and exit.
+        if (result == kCFRunLoopRunStopped)// || (result == kCFRunLoopRunFinished))
+            done = YES;
+        // Check for any other exit conditions here and set the
+        // done variable as needed.
+    }
+    while (!done);
+    
+    // Clean up code here. Be sure to release any allocated autorelease pools.
 }
 
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb
@@ -50,7 +78,7 @@
 - (IBAction)speakWithText:(NSString*)text
 {
     // speak with speaker instance
-    [synth startSpeakingString:text];
+    [_synth startSpeakingString:text];
     // call when finished speaking
     //[synth.delegate speechSynthesizer:synth didFinishSpeaking:true];
 }

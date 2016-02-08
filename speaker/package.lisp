@@ -20,12 +20,15 @@
    #:available-voices-count
    #:set-voice
    #:get-voice-name
-   #:cleanup
+   #:cleanup-speaker
    #:make-speaker
    #:speak-with
    #:set-voice-with
    #:cleanup-with
    #:register-will-speak-word-callback
    #:register-will-speak-phoneme-callback
-   #:register-did-finish-speaking-callback))
+   #:register-did-finish-speaking-callback
+   #:make-listener
+   #:start-listening
+   #:stop-listening))
 0
