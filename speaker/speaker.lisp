@@ -25,7 +25,7 @@
 
 #+windows
 (define-foreign-library libspeak
-  (:windows (:or #P"libspeak.dll" #P"d:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll")))
+  (:windows (:or #P"libspeak.dll" #P"d:\\Code\\Common Lisp\\projects\\Speaker\\speaker\\libspeak.dll")))
 
 #+linux
 (define-foreign-library libspeak
@@ -35,7 +35,7 @@
 (load-foreign-library "libspeak.dylib")
 
 #+windows
-(load-foreign-library #P"d:\\Code\\Common Lisp\\projects\\CL-Speak\\cl-speak\\libspeak.dll")
+(load-foreign-library #P"d:\\Code\\Common Lisp\\projects\\Speaker\\speaker\\libspeak.dll")
 
 #+linux
 (load-foreign-library "libspeak.so")
@@ -44,7 +44,7 @@
 ;; Error handling
 ;; -----------------------
 
-(defun cl-speak-error-handler (condition)
+(defun speaker-error-handler (condition)
   (format *error-output* "~&~A~&" condition)
   (throw 'common-parse niL))
 
@@ -60,7 +60,7 @@
 	  (foreign-funcall "init_speaker" :void)
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'init-speaker': ~A~%" condition))))
+			  "Speaker: error in 'init-speaker': ~A~%" condition))))
 
 
 (defun format-with-list (fmt-msg args)
@@ -92,7 +92,7 @@
 						   (foreign-funcall "speak" :string foreign-text :void)))
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'speak': ~A~%" condition))))
+			  "Speaker: error in 'speak': ~A~%" condition))))
 
 
 (defun available-voices-count ()
@@ -102,7 +102,7 @@
 		retval)
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'available-voices-count': ~A~%" condition))))
+			  "Speaker: error in 'available-voices-count': ~A~%" condition))))
 
 
 (defun set-voice (idx)
@@ -111,7 +111,7 @@
 	  (foreign-funcall "set_voice" :uint idx :void)
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'set-voice': ~A~%" condition))))
+			  "Speaker: error in 'set-voice': ~A~%" condition))))
   
 
 (defun get-voice-name (idx)
@@ -123,7 +123,7 @@
 		(foreign-string-to-lisp voice-c-str))
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'get-voice-name': ~A~%" condition))))
+			  "Speaker: error in 'get-voice-name': ~A~%" condition))))
 
 (defun cleanup-speaker ()
   "Cleanup. Expecially useful for com-connection in windows."
@@ -131,7 +131,7 @@
 	  (foreign-funcall "cleanup_speaker" :void)
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'cleanup-speaker': ~A~%" condition))))
+			  "Speaker: error in 'cleanup-speaker': ~A~%" condition))))
   
 
 
@@ -149,7 +149,7 @@ created synth instance with given speech."
 	  (let ((speaker (foreign-funcall "make_speaker" :pointer)))
 		speaker)
   (error (condition)
-		 (format *error-output* "CL-Speak: error in 'make-speaker': ~A~%" condition))))
+		 (format *error-output* "Speaker: error in 'make-speaker': ~A~%" condition))))
 
 (defun speak-with (speaker &rest args)
   "Speak text with synth container 'Speaker'."
@@ -160,14 +160,14 @@ created synth instance with given speech."
 										   speaker :string 
 										   foreign-text :void)))
 	(error (condition) 
-	  (format *error-output* "CL-Speak: error in 'speak-with': ~A~%" condition))))
+	  (format *error-output* "Speaker: error in 'speak-with': ~A~%" condition))))
 
 (defun set-voice-with (speaker voiceid)
   "Set voiceid in synth container 'Speaker'."
   (handler-case 
 	  (foreign-funcall "set_voice_with" :pointer speaker :uint voiceid :void)
 	(error (condition) 
-	  (format *error-output* "CL-Speak: error in 'set-voice-with': ~A~%" condition))))
+	  (format *error-output* "Speaker: error in 'set-voice-with': ~A~%" condition))))
 
 (defun cleanup-with (speaker)
   "Cleanup. Expecially useful for com-connection in windows."
@@ -175,15 +175,14 @@ created synth instance with given speech."
 	  (foreign-funcall "cleanup_with" :pointer speaker :void)
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'cleanup-with': ~A~%" condition))))
+			  "Speaker: error in 'cleanup-with': ~A~%" condition))))
 
 (defun mainloop-speaker (speaker)
   "Event run-/ mainloop."
   (handler-case 
-	  (let ((speaker (foreign-funcall "mainloop_speaker" :pointer speaker :void)))
-		speaker)
+	  (foreign-funcall "mainloop_speaker" :pointer speaker :void)
   (error (condition)
-		 (format *error-output* "CL-Speak: error in 'mainloop_speaker': ~A~%" condition))))
+		 (format *error-output* "Speaker: error in 'mainloop_speaker': ~A~%" condition))))
     
 ;; ------------------------------------------------------
 ;; Lisp callbacks are called within objective-c delegates
@@ -196,7 +195,7 @@ created synth instance with given speech."
 					   :pointer speaker :pointer callback :void)
 	(error (condition) 
 	  (format *error-output* 
-			  "CL-Speak: error in 'register-will-speak-word-callback': ~A~%" condition))))
+			  "Speaker: error in 'register-will-speak-word-callback': ~A~%" condition))))
 
 
 (defun register-will-speak-phoneme-callback (speaker callback)
@@ -206,7 +205,7 @@ created synth instance with given speech."
 					   :pointer speaker :pointer callback :void)
 	(error (condition) 
 	  (format *error-output* 
-			  "CL-Speak: error in 'register-will-speak-phoneme-callback': ~A~%" condition))))
+			  "Speaker: error in 'register-will-speak-phoneme-callback': ~A~%" condition))))
 
 
 (defun register-did-finish-speaking-callback (speaker callback)
@@ -216,7 +215,7 @@ created synth instance with given speech."
 					   :pointer speaker :pointer callback :void)
 	(error (condition) 
 	  (format *error-output* 
-			  "CL-Speak: error in 'register-did-finish-speaking-cakkback': ~A~%" condition))))
+			  "Speaker: error in 'register-did-finish-speaking-cakkback': ~A~%" condition))))
 
 ; -------------------------------------------------------------
 ; These function wrap objective-c class methods
@@ -231,7 +230,7 @@ runloop."
 	  (let ((speaker (foreign-funcall "make_listener" :pointer)))
 		speaker)
   (error (condition)
-		 (format *error-output* "CL-Speak: error in 'make-listener': ~A~%" condition))))
+		 (format *error-output* "Speaker: error in 'make-listener': ~A~%" condition))))
 
 
 (defun start-listening (listener)
@@ -240,7 +239,7 @@ runloop."
 	  (let ((listener (foreign-funcall "start_listening" :pointer listener :void)))
 		listener)
   (error (condition)
-		 (format *error-output* "CL-Speak: error in 'start_listening': ~A~%" condition))))
+		 (format *error-output* "Speaker: error in 'start_listening': ~A~%" condition))))
 
 (defun stop-listening (listener)
   "Stop speech recognizing."
@@ -248,7 +247,7 @@ runloop."
 	  (let ((listener (foreign-funcall "stop_listening" :pointer listener :void)))
 		listener)
   (error (condition)
-		 (format *error-output* "CL-Speak: error in 'stop_listening': ~A~%" condition))))
+		 (format *error-output* "Speaker: error in 'stop_listening': ~A~%" condition))))
 
 (defun add-command (listener command)
   "Add command for recoginition."
@@ -257,28 +256,27 @@ runloop."
 		(foreign-funcall "add_command" :pointer listener :string foreign-command :void))
 	(error (condition)
 	  (format *error-output* 
-			  "CL-Speak: error in 'add-command': ~A~%" condition))))
+			  "Speaker: error in 'add-command': ~A~%" condition))))
 
 (defun mainloop-listener (listener)
   "Event run-/ mainloop."
   (handler-case 
-	  (let ((listener (foreign-funcall "mainloop_listener" :pointer listener :void)))
-		listener)
+	  (foreign-funcall "mainloop_listener" :pointer listener :void)
   (error (condition)
-		 (format *error-output* "CL-Speak: error in 'mainloop_listener': ~A~%" condition))))
+		 (format *error-output* "Speaker: error in 'mainloop_listener': ~A~%" condition))))
   
 ;; ------------------------------------------------------
 ;; Lisp callbacks are called within objective-c delegates
 ;; ------------------------------------------------------
 
-(defun register-did-recognize-command-callback (speaker callback)
+(defun register-did-recognize-command-callback (listener callback)
   "Register callback for 'did recognize command' delegate."
   (handler-case
 	  (foreign-funcall "register_did_recognize_command_callback" 
-					   :pointer speaker :pointer callback :void)
+					   :pointer listener :pointer callback :void)
 	(error (condition) 
 	  (format *error-output* 
-			  "CL-Speak: error in 'register-did-recognize-command-callback': ~A~%" condition))))
+			  "Speaker: error in 'register-did-recognize-command-callback': ~A~%" condition))))
 
 ;;
 ;; Async operations
@@ -298,7 +296,7 @@ runloop."
   
 (defmacro disable-async-syntax ()
   "Disable special-character '°' syntax."
-  `(eval-when (:load-toplevel :compile-toplevel :execute)
+  `(eval-when (:load-toplevel :compile-slitoplevel :execute)
      (setq *readtable* (pop speaker:*previous-readtables*))))
 
 

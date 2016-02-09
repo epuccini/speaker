@@ -34,16 +34,7 @@
         _done = NO;
         
         // start runloop
-        [[NSRunLoop currentRunLoop] run];
         //[self performSelectorInBackground:@selector(mainLoop) withObject:self];
-        
-        // start runloop
-//        NSLog(@"Creating timer...");
-//        _timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-//                                                  target:self
-//                                                selector:@selector(mainLoop:)
-//                                                userInfo:nil
-//                                                 repeats:YES];
     }
     return self;
 }
@@ -55,7 +46,7 @@
     do
     {
         // Start the run loop but return after each source is handled.
-        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
+        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 10, YES);
         
         // If a source explicitly stopped the run loop, or if there are no
         // sources or timers, go ahead and exit.

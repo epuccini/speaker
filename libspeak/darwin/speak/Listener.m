@@ -36,15 +36,7 @@
     [_speechRecognizer setDelegate:self];
 
     // start runloop
-    [[NSRunLoop currentRunLoop] run];
     //[self performSelectorInBackground:@selector(mainLoop) withObject:self];
-    
-//    NSLog(@"Creating timer...");
-//    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0
-//                                              target:self
-//                                            selector:@selector(mainLoop:)
-//                                            userInfo:nil
-//                                             repeats:YES];
     return self;
 }
 
@@ -54,7 +46,7 @@
     do
     {
         // Start the run loop but return after each source is handled.
-        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
+        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 10, YES);
         
         // If a source explicitly stopped the run loop, or if there are no
         // sources or timers, go ahead and exit.
@@ -73,7 +65,7 @@
 {
     NSLog(@"Speech recognized...");
     
-    for (int i = 0; i < sizeof(_commands); i++) {
+    for (int i = 0; i < ([_commands count] - 1); i++) {
         NSString* command_string = _commands[i];
 
         if ([command isEqualToString:command_string]) {

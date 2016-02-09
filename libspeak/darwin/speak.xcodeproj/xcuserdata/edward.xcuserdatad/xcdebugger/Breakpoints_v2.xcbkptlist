@@ -194,15 +194,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "speak/Listener.m"
-            timestampString = "476666273.355996"
+            timestampString = "476669715.360935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "73"
-            endingLineNumber = "73"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
             landmarkName = "-speechRecognizer:didRecognizeCommand:"
             landmarkType = "5">
          </BreakpointContent>
@@ -214,11 +214,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "speak/Speaker.m"
-            timestampString = "476660600.698672"
+            timestampString = "476669715.360935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "121"
-            endingLineNumber = "121"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
             landmarkName = "-speechSynthesizer:didFinishSpeaking:"
             landmarkType = "5">
          </BreakpointContent>
@@ -230,11 +230,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "speak/Speaker.m"
-            timestampString = "476660600.698672"
+            timestampString = "476669715.360935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "111"
-            endingLineNumber = "111"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "-speechSynthesizer:willSpeakPhoneme:"
             landmarkType = "5">
          </BreakpointContent>
@@ -246,11 +246,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "speak/Speaker.m"
-            timestampString = "476660600.698672"
+            timestampString = "476669715.360935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "99"
-            endingLineNumber = "99"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "-speechSynthesizer:willSpeakWord:ofString:"
             landmarkType = "5">
          </BreakpointContent>
@@ -262,11 +262,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "speak/Speaker.m"
-            timestampString = "476660600.698672"
+            timestampString = "476669715.360935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "69"
-            endingLineNumber = "69"
+            startingLineNumber = "61"
+            endingLineNumber = "61"
             landmarkName = "-mainLoop"
             landmarkType = "5">
          </BreakpointContent>
@@ -278,12 +278,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "speak/Listener.m"
-            timestampString = "476666273.355996"
+            timestampString = "476669715.360935"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
             landmarkName = "-registerDidRecognizeCommand:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "speak/Listener.m"
+            timestampString = "476669705.52316"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "71"
+            endingLineNumber = "71"
+            landmarkName = "-speechRecognizer:didRecognizeCommand:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "speak/Listener.m"
+            timestampString = "476669819.023776"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "-speechRecognizer:didRecognizeCommand:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

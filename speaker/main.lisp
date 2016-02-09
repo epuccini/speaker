@@ -19,7 +19,7 @@
 ;; Example application
 
 (cffi:defcallback wsw-callback :void ((text :string))
-	(print "Called back and word spoken: ~A!~%" text))
+  (print "Called back and word spoken: ~A!~%" text))
 
 (cffi:defcallback wsp-callback :void ((op-code :short))
   (format t  "Called back and phoneme spoke (op-code: ~D)!~%" op-code))
@@ -27,8 +27,8 @@
 (cffi:defcallback dfs-callback :void ()
   (print "Called back and did finish!"))
 
-(cffi:defcallback drc-callback :void ()
-  (print "Called back and did recognizeh!"))
+(cffi:defcallback drc-callback :void ((text :string))
+  (format t "Called back and did recognize: ~A." text))
 
 (enable-async-syntax)
 
@@ -37,6 +37,7 @@
   ;;
   ;; Examples with plain c interface
   ;; 
+  (print "Start speaker...")
   ;; (init-speaker)
   ;; (format t "Available-voices: ~D~%" (available-voices-count))
   ;; (format t "Get-voice(~D): ~A~%" (get-voice-name 6) "")
@@ -68,24 +69,24 @@
   (cleanup-with speaker))
 
 (defun listener-test (listener)
-  (register-did-recognize-command-callback listener (cffi:callback drc-callback))
-  (print "Listener...")
   (add-command listener "hey")
   (add-command listener "run")
   (add-command listener "test")
+  (register-did-recognize-command-callback listener (cffi:callback drc-callback))
   (start-listening listener)
   (print "Start listening")
-  (sleep 15)
+  (sleep 5)
   (print "End listening")
-  (stop-listening listener)
-  (terpri))
+  (stop-listening listener))
 
 (defun main ()
     (let ((listener (make-listener))
 		  (speaker (make-speaker)))
-	  (declare (ignore listener))
-	  °(speaker-test speaker)
-	  (mainloop-speaker speaker)))
+	  °(listener-test listener)
+;;	  °(speaker-test speaker)
+	  (loop for x from 0 to 10 do
+		   (mainloop-listener listener))))
+;;		   (mainloop-speaker speaker))))
 
 (main)
 
