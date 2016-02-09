@@ -68,9 +68,10 @@ extern "C"
     LIBRARY_EXPORT void stop_listening(void* listener);
     LIBRARY_EXPORT void add_command(void* listener, char*);
     LIBRARY_EXPORT void cleanup_listener(void* listener);
-    LIBRARY_EXPORT void mainloop_listener(void* listener);
-    LIBRARY_EXPORT void mainloopthread_listener(void* listener);
-    LIBRARY_EXPORT void stop_mainloopthread_listener(void* listener);
+    LIBRARY_EXPORT void runloop_listener(void* listener);
+    LIBRARY_EXPORT void runloop_thread_listener(void* listener);
+    LIBRARY_EXPORT void runloop_call_thread_listener(void* listener);
+    LIBRARY_EXPORT void stop_runloop_thread_listener(void* listener);
     
     LIBRARY_EXPORT void register_did_recognize_command_callback(void* listener, drc_callback cb);
     

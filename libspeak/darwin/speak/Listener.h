@@ -30,8 +30,9 @@
 - (void)startListening;
 - (void)stopListening;
 - (void)addCommand:(NSString*)command_string;
-- (void)mainLoop;
-- (void)mainLoopThread;
+- (void)runLoop;
+- (void)runLoopThread;
+- (void)runLoopCallThread;
 - (void)stopMainLoopThread;
 - (void)dummyThread;
 

@@ -29,11 +29,16 @@
    #:register-will-speak-word-callback
    #:register-will-speak-phoneme-callback
    #:register-did-finish-speaking-callback
+   #:register-did-recognize-command-callback
    #:make-listener
    #:start-listening
    #:stop-listening
    #:async-prefix
    #:enable-async-syntax
    #:disable-async-syntax
-   #:*previous-readtables*))
+   #:*previous-readtables*
+   #:runloop-listener
+   #:runloop-thread-listener
+   #:runloop-call-thread-listener
+   #:stop-runloop-thread-listener))
 0

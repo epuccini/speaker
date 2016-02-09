@@ -17,6 +17,7 @@
 (require 'bordeaux-threads)
 
 (defvar *listener* nil);
+(defvar *stop-flag* nil);
 
 ;; Example application
 
@@ -82,7 +83,9 @@
 (cffi:defcallback drc-callback :void ((text :string))
   (format t "Called back and did recognize: ~A.~%" text)
   (cond ((equal text "exit")
-		 (stop-mainloopthread-listener *listener*))
+		 (progn
+		   (setq *stop-flag* t)
+		   (stop-runloop-thread-listener *listener*)))
 		((equal text "speak")
 		 (let ((speaker (make-speaker)))
 		   (stop-listening *listener*)
@@ -99,7 +102,8 @@
 	(setf *listener* listener)
 	(listener-setup listener)
 	(print "Entering mainloop...")
-	(mainloopthread-listener listener)
+	(loop while (not *stop-flag*) do
+		 (runloop-call-thread-listener listener))
 	(stop-listening listener)
 	(print "End listening")))
 

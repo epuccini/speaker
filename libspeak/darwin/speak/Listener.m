@@ -42,12 +42,12 @@
     return self;
 }
 
-- (void)mainLoop
+- (void)runLoop
 {
     // start runloop
     @autoreleasepool {
-        [self performSelectorOnMainThread:@selector(mainloopThread) withObject:nil waitUntilDone:YES];
-                //[self performSelectorInBackground:@selector(mainLoop) withObject:self];
+//        [self performSelectorOnMainThread:@selector(mainloopThread) withObject:nil waitUntilDone:YES];
+        [self performSelectorInBackground:@selector(mainLoop) withObject:self];
 //        [NSThread detachNewThreadSelector:@selector(mainLoop) toTarget:self withObject:nil];
 //        _mainloopThread = [[NSThread alloc] initWithTarget:self
 //                                                  selector:@selector(mainLoopThread)
@@ -57,7 +57,7 @@
     }
 }
 
-- (void)mainLoopThread
+- (void)runLoopThread
 {
     // Add your sources or timers to the run loop and do any other setup.
     do
@@ -73,10 +73,15 @@
         // done variable as needed.
     }
     while (!_done);
-//    [[NSRunLoop currentRunLoop] run];
     
     // Clean up code here. Be sure to release any allocated autorelease pools.
     _mainloopThread = NULL;
+}
+
+- (void)runLoopCallThread
+{
+    // Start the run loop but return after each source is handled.
+    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
 }
 
 - (void)stopMainLoopThread

@@ -151,17 +151,22 @@ void cleanup_listener(void* listener)
    listener = NULL;
 }
 
-void mainloop_listener(void* listener)
+void runloop_listener(void* listener)
 {
-    [(__bridge Listener*)listener mainLoop];
+    [(__bridge Listener*)listener runLoop];
 }
 
-void mainloopthread_listener(void* listener)
+void runloop_thread_listener(void* listener)
 {
-    [(__bridge Listener*)listener mainLoopThread];
+    [(__bridge Listener*)listener runLoopThread];
 }
 
-void stop_mainloopthread_listener(void* listener)
+void runloop_call_thread_listener(void* listener)
+{
+    [(__bridge Listener*)listener runLoopCallThread];
+}
+
+void stop_runloop_thread_listener(void* listener)
 {
     [(__bridge Listener*)listener stopMainLoopThread];
 }

@@ -258,30 +258,38 @@ runloop."
 	  (format *error-output* 
 			  "Speaker: error in 'add-command': ~A~%" condition))))
 
-(defun mainloop-listener (listener)
-  "Event run-/ mainloop."
+(defun runloop-listener (listener)
+  "Listener runloop caller and autoreleasepool."
   (handler-case 
-	  (foreign-funcall "mainloop_listener" :pointer listener :void)
+	  (foreign-funcall "runloop_listener" :pointer listener :void)
   (error (condition)
-		 (format *error-output* "Speaker: error in 'mainloop_listener': ~A~%" condition))))
+		 (format *error-output* "Speaker: error in 'runloop_listener': ~A~%" condition))))
   
 
-(defun mainloopthread-listener (listener)
-  "Event run-/ mainloop."
+(defun runloop-thread-listener (listener)
+  "Listener runloop-thread."
   (handler-case 
-	  (foreign-funcall "mainloopthread_listener" :pointer listener :void)
+	  (foreign-funcall "runloop_thread_listener" :pointer listener :void)
   (error (condition)
-		 (format *error-output* "Speaker: error in 'mainloopthread_listener': ~A~%" 
+		 (format *error-output* "Speaker: error in 'runloop_thread_listener': ~A~%" 
 				 condition))))
 
-(defun stop-mainloopthread-listener (listener)
+(defun runloop-call-thread-listener (listener)
+  "Listener runloop thread as single call which returns after one loop."
+  (handler-case 
+	  (foreign-funcall "runloop_call_thread_listener" :pointer listener :void)
+  (error (condition)
+		 (format *error-output* "Speaker: error in 'runloop_call_thread_listener': ~A~%" 
+				 condition))))
+
+(defun stop-runloop-thread-listener (listener)
   "Stop speech recognizing."
   (handler-case 
-	  (let ((listener (foreign-funcall "stop_mainloopthread_listener" 
+	  (let ((listener (foreign-funcall "stop_runloop_thread_listener" 
 									   :pointer listener :void)))
 		listener)
   (error (condition)
-	(format *error-output* "Speaker: error in 'stop_mainloopthread_listener': ~A~%" 
+	(format *error-output* "Speaker: error in 'stop_runloop_thread_listener': ~A~%" 
 			condition))))
   
 ;; ------------------------------------------------------

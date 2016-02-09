@@ -13,7 +13,7 @@
   :version "0.1"
   :author "Edward Puccini epuccini@gmx.de"
   :license "LGPL"
-  :depends-on ( :cffi :bordeaux-threads )
+  :depends-on ( "cffi" "bordeaux-threads" )
   :components (( :file "package" )
 			   ( :file "speaker" :depends-on ( "package" ))
                ( :file "main" :depends-on ( "speaker" ))))
