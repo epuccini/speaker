@@ -28,7 +28,6 @@
   ;;
   ;; Examples with plain c interface
   ;; 
-  (print "Start speaker...")
   ;; (init-speaker)
   ;; (format t "Available-voices: ~D~%" (available-voices-count))
   ;; (format t "Get-voice(~D): ~A~%" (get-voice-name 6) "")
