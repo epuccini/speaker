@@ -21,6 +21,7 @@
     NSMutableDictionary * _command_dispatch;
     BOOL _done;
     NSTimer *_timer;
+    NSThread* _mainloopThread;
     
     drc_callback did_recognize_command_callback;
 }
@@ -30,6 +31,9 @@
 - (void)stopListening;
 - (void)addCommand:(NSString*)command_string;
 - (void)mainLoop;
+- (void)mainLoopThread;
+- (void)stopMainLoopThread;
+- (void)dummyThread;
 
 - (void)registerDidRecognizeCommand:(drc_callback)cb;
 
@@ -40,5 +44,6 @@
 @property (nonatomic, retain)NSMutableArray* commands;
 @property (nonatomic, retain)NSMutableDictionary* command_dispatch;
 @property (nonatomic, assign)BOOL done;
-@property (atomic, retain)NSTimer* timer;
+@property (atomic, retain)NSThread* mainloopThread;
+
 @end

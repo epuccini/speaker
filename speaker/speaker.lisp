@@ -265,6 +265,25 @@ runloop."
   (error (condition)
 		 (format *error-output* "Speaker: error in 'mainloop_listener': ~A~%" condition))))
   
+
+(defun mainloopthread-listener (listener)
+  "Event run-/ mainloop."
+  (handler-case 
+	  (foreign-funcall "mainloopthread_listener" :pointer listener :void)
+  (error (condition)
+		 (format *error-output* "Speaker: error in 'mainloopthread_listener': ~A~%" 
+				 condition))))
+
+(defun stop-mainloopthread-listener (listener)
+  "Stop speech recognizing."
+  (handler-case 
+	  (let ((listener (foreign-funcall "stop_mainloopthread_listener" 
+									   :pointer listener :void)))
+		listener)
+  (error (condition)
+	(format *error-output* "Speaker: error in 'stop_mainloopthread_listener': ~A~%" 
+			condition))))
+  
 ;; ------------------------------------------------------
 ;; Lisp callbacks are called within objective-c delegates
 ;; ------------------------------------------------------

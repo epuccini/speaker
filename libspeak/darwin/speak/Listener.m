@@ -18,7 +18,7 @@
 @synthesize command_dispatch=_command_dispatch;
 @synthesize speechRecognizer=_speechRecognizer;
 @synthesize done=_done;
-@synthesize timer=_timer;
+@synthesize mainloopThread=_mainloopThread;
 
 - (id)init
 {
@@ -34,47 +34,69 @@
     
     // set delegate for callbacks
     [_speechRecognizer setDelegate:self];
-
-    // start runloop
-    //[self performSelectorInBackground:@selector(mainLoop) withObject:self];
+    
+    // enable mutlithreading
+    @autoreleasepool {
+        [NSThread detachNewThreadSelector:@selector(dummyThread) toTarget:self withObject:nil];
+    }
     return self;
 }
 
 - (void)mainLoop
 {
+    // start runloop
+    @autoreleasepool {
+        [self performSelectorOnMainThread:@selector(mainloopThread) withObject:nil waitUntilDone:YES];
+                //[self performSelectorInBackground:@selector(mainLoop) withObject:self];
+//        [NSThread detachNewThreadSelector:@selector(mainLoop) toTarget:self withObject:nil];
+//        _mainloopThread = [[NSThread alloc] initWithTarget:self
+//                                                  selector:@selector(mainLoopThread)
+//                                                    object:nil];
+//        
+//        [_mainloopThread start];  // Actually create the thread
+    }
+}
+
+- (void)mainLoopThread
+{
     // Add your sources or timers to the run loop and do any other setup.
     do
     {
         // Start the run loop but return after each source is handled.
-        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 10, YES);
+        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
         
         // If a source explicitly stopped the run loop, or if there are no
         // sources or timers, go ahead and exit.
-        if (result == kCFRunLoopRunStopped)// || (result == kCFRunLoopRunFinished))
+        if ((result == kCFRunLoopRunStopped) || (result == kCFRunLoopRunFinished))
             _done = YES;
         // Check for any other exit conditions here and set the
         // done variable as needed.
     }
     while (!_done);
+//    [[NSRunLoop currentRunLoop] run];
     
     // Clean up code here. Be sure to release any allocated autorelease pools.
+    _mainloopThread = NULL;
+}
+
+- (void)stopMainLoopThread
+{
+    _done = YES;
+}
+
+- (void)dummyThread
+{
 }
 
 - (void)speechRecognizer:(NSSpeechRecognizer *)sender
      didRecognizeCommand:(NSString *)command
 {
+#ifdef __DEBUG
     NSLog(@"Speech recognized...");
-    
-    for (int i = 0; i < ([_commands count] - 1); i++) {
-        NSString* command_string = _commands[i];
-
-        if ([command isEqualToString:command_string]) {
-            char pszForeignText[1024];
-            strcpy(pszForeignText, [command_string
-                                        cStringUsingEncoding:[NSString defaultCStringEncoding]]);
-            (*did_recognize_command_callback)(pszForeignText);
-        }
-    }
+#endif
+    char pszForeignText[1024];
+    strcpy(pszForeignText, [command cStringUsingEncoding:[NSString defaultCStringEncoding]]);
+    (*did_recognize_command_callback)(pszForeignText);
 }
 
 - (void)registerDidRecognizeCommand:(drc_callback)cb

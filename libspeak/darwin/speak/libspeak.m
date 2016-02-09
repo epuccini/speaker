@@ -156,6 +156,16 @@ void mainloop_listener(void* listener)
     [(__bridge Listener*)listener mainLoop];
 }
 
+void mainloopthread_listener(void* listener)
+{
+    [(__bridge Listener*)listener mainLoopThread];
+}
+
+void stop_mainloopthread_listener(void* listener)
+{
+    [(__bridge Listener*)listener stopMainLoopThread];
+}
+
 ////////////////////////////////////////////////
 //
 // Lisp callbacks can be registered here and

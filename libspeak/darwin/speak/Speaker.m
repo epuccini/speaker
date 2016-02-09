@@ -87,7 +87,9 @@
             willSpeakWord:(NSRange)wordToSpeak
                  ofString:(NSString *)text
 {
+#ifdef __DEBUG
     NSLog(@"willSpeakWord %@", text);
+#endif
     if (will_speak_word_callback != NULL)
     {
         char pszForeignText[1024];
@@ -99,7 +101,9 @@
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender
          willSpeakPhoneme:(short)phonemeOpcode
 {
+#ifdef __DEBUG
     NSLog(@"willSpeakPhoneme %d", phonemeOpcode);
+#endif
     if (will_speak_phoneme_callback != NULL)
     {
         (*will_speak_phoneme_callback)(phonemeOpcode);
@@ -109,7 +113,9 @@
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender
         didFinishSpeaking:(BOOL)success
 {
+#ifdef __DEBUG
     NSLog(@"didFinishSpeaking %d", success);
+#endif
     if (did_finish_speaking_callback != NULL)
     {
         (*did_finish_speaking_callback)();
