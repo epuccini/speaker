@@ -33,7 +33,8 @@
 @property (nonatomic, retain)NSTimer* timer;
 
 - (id)init;
-- (void)mainLoop;
+- (void)runLoopThread;
+- (void)runLoopCallThread;
 
 - (IBAction)speakWithText:(NSString*)text;
 

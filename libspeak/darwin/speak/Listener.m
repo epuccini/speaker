@@ -46,9 +46,9 @@
 {
     // start runloop
     @autoreleasepool {
-//        [self performSelectorOnMainThread:@selector(mainloopThread) withObject:nil waitUntilDone:YES];
-        [self performSelectorInBackground:@selector(mainLoop) withObject:self];
-//        [NSThread detachNewThreadSelector:@selector(mainLoop) toTarget:self withObject:nil];
+//        [self performSelectorOnMainThread:@selector(runLoopThread) withObject:nil waitUntilDone:YES];
+        [self performSelectorInBackground:@selector(runLoopCallThread) withObject:self];
+//        [NSThread detachNewThreadSelector:@selector(runLoopThread) toTarget:self withObject:nil];
 //        _mainloopThread = [[NSThread alloc] initWithTarget:self
 //                                                  selector:@selector(mainLoopThread)
 //                                                    object:nil];

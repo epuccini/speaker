@@ -177,13 +177,22 @@ created synth instance with given speech."
 	  (format *error-output* 
 			  "Speaker: error in 'cleanup-with': ~A~%" condition))))
 
-(defun mainloop-speaker (speaker)
-  "Event run-/ mainloop."
+(defun runloop-thread-speaker (speaker)
+  "Mainthread runloop-loop for speaker."
   (handler-case 
-	  (foreign-funcall "mainloop_speaker" :pointer speaker :void)
+	  (foreign-funcall "runloop_thread_speaker" :pointer speaker :void)
   (error (condition)
-		 (format *error-output* "Speaker: error in 'mainloop_speaker': ~A~%" condition))))
-    
+		 (format *error-output* "Speaker: error in 'runloop_thread_speaker': ~A~%" 
+				 condition))))
+
+(defun runloop-call-thread-speaker (speaker)
+  "Mainthread single runloop-call for speaker."
+  (handler-case 
+	  (foreign-funcall "runloop_call_thread_speaker" :pointer speaker :void)
+  (error (condition)
+		 (format *error-output* "Speaker: error in 'runloop_call_thread_speaker': ~A~%" 
+				 condition))))
+        
 ;; ------------------------------------------------------
 ;; Lisp callbacks are called within objective-c delegates
 ;; ------------------------------------------------------

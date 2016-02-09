@@ -92,9 +92,14 @@ void cleanup_with(void* speaker)
     speaker = NULL;
 }
 
-void mainloop_speaker(void* speaker)
+void runloop_thread_speaker(void* speaker)
 {
-    [(__bridge Speaker*)speaker mainLoop];
+    [(__bridge Speaker*)speaker runLoopThread];
+}
+
+void runloop_call_thread_speaker(void* speaker)
+{
+    [(__bridge Speaker*)speaker runLoopCallThread];
 }
 
 ////////////////////////////////////////////////

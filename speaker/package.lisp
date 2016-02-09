@@ -37,6 +37,9 @@
    #:enable-async-syntax
    #:disable-async-syntax
    #:*previous-readtables*
+;   #:runloop-speaker
+   #:runloop-thread-speaker
+   #:runloop-call-thread-speaker
    #:runloop-listener
    #:runloop-thread-listener
    #:runloop-call-thread-listener

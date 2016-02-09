@@ -39,7 +39,7 @@
     return self;
 }
 
-- (void)mainLoop
+- (void)runLoopThread
 {
     // Set up an autorelease pool here if not using garbage collection.
      // Add your sources or timers to the run loop and do any other setup.
@@ -60,6 +60,13 @@
     // Clean up code here. Be sure to release any allocated autorelease pools.
 }
 
+- (void)runLoopCallThread
+{
+    // Start the run loop but return after each source is handled.
+    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
+}
+
+
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb
 {
     will_speak_word_callback = cb;
@@ -79,8 +86,6 @@
 {
     // speak with speaker instance
     [_synth startSpeakingString:text];
-    // call when finished speaking
-    //[_synth.delegate speechSynthesizer:_synth didFinishSpeaking:true];
 }
 
 - (void)speechSynthesizer:(NSSpeechSynthesizer *)sender

@@ -72,16 +72,16 @@
 ;; CFFI Callbacks
 ;;
 (cffi:defcallback wsw-callback :void ((text :string))
-  (format t "Called back and word spoken: ~A!~%" text))
+  (format t "Called back and spoke: ~A!~%" text))
 
 (cffi:defcallback wsp-callback :void ((op-code :short))
-  (format t  "Called back and phoneme spoke (op-code: ~D)!~%" op-code))
+  (format t  "Called back and spoke phoneme (op-code: ~D)!~%" op-code))
 
 (cffi:defcallback dfs-callback :void ()
-  (format t "Called back and did finish!~%"))
+  (format t "Called back and did finish word!~%"))
 
 (cffi:defcallback drc-callback :void ((text :string))
-  (format t "Called back and did recognize: ~A.~%" text)
+  (format t "Called back and recognize: ~A.~%" text)
   (cond ((equal text "exit")
 		 (progn
 		   (setq *stop-flag* t)
@@ -98,11 +98,13 @@
 (defun main ()
   "Main test program."
   (terpri)
-  (let ((listener (make-listener)))
+  (let ((listener (make-listener))
+		(speaker (make-speaker)))
 	(setf *listener* listener)
 	(listener-setup listener)
 	(print "Entering mainloop...")
 	(loop while (not *stop-flag*) do
+		 (runloop-call-thread-speaker speaker)
 		 (runloop-call-thread-listener listener))
 	(stop-listening listener)
 	(print "End listening")))

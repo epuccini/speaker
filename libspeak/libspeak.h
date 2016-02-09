@@ -46,7 +46,8 @@ extern "C"
     LIBRARY_EXPORT unsigned int available_voices_count(void);
     LIBRARY_EXPORT void get_voice_name(unsigned int idx, char* pszOut);
     LIBRARY_EXPORT void cleanup_speaker(void);
-    LIBRARY_EXPORT void mainloop_speaker(void* speaker);
+    LIBRARY_EXPORT void runloop_thread_speaker(void* speaker);
+    LIBRARY_EXPORT void runloop_call_thread_speaker(void* speaker);
     
     ///////////////
     // Speaker OO
