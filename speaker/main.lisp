@@ -56,7 +56,7 @@
   (sleep 2)
   (cleanup-with speaker))
 
-(defun listener-test (listener)
+(defun listener-setup (listener)
   (add-command listener "hey")
   (add-command listener "run")
   (add-command listener "test")
@@ -85,7 +85,9 @@
 		 (stop-mainloopthread-listener *listener*))
 		((equal text "speak")
 		 (let ((speaker (make-speaker)))
-		   (speaker-test speaker)))))
+		   (stop-listening *listener*)
+		   (speaker-test speaker)
+		   (start-listening *listener*)))))
 
 ;;
 ;; Main
@@ -95,7 +97,7 @@
   (terpri)
   (let ((listener (make-listener)))
 	(setf *listener* listener)
-	(listener-test listener)
+	(listener-setup listener)
 	(print "Entering mainloop...")
 	(mainloopthread-listener listener)
 	(stop-listening listener)
