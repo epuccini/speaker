@@ -42,7 +42,7 @@
 
 - (void)runLoop
 {
-    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
+    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, YES);
 }
 
 - (bool)isListening
