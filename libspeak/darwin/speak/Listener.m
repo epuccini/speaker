@@ -47,13 +47,18 @@
     // start runloop
     @autoreleasepool {
 //        [self performSelectorOnMainThread:@selector(runLoopThread) withObject:nil waitUntilDone:YES];
-        [self performSelectorInBackground:@selector(runLoopCallThread) withObject:self];
+//        [self performSelectorInBackground:@selector(runLoopCallThread) withObject:self];
 //        [NSThread detachNewThreadSelector:@selector(runLoopThread) toTarget:self withObject:nil];
 //        _mainloopThread = [[NSThread alloc] initWithTarget:self
 //                                                  selector:@selector(mainLoopThread)
 //                                                    object:nil];
 //        
 //        [_mainloopThread start];  // Actually create the thread
+//        if (![[NSThread currentThread] isMainThread]) {
+//            [self performSelector:@selector(runLoopCallThread) onThread:[NSThread mainThread] withObject:nil waitUntilDone:YES];
+//            return;
+//        }
+        [NSRunLoop currentRunLoop];
     }
 }
 
@@ -78,10 +83,15 @@
     _mainloopThread = NULL;
 }
 
-- (void)runLoopCallThread
+- (SInt32)runLoopCallThread
 {
     // Start the run loop but return after each source is handled.
-    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
+    return CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
+}
+
+- (bool)isListening
+{
+    return [self isListening];
 }
 
 - (void)stopMainLoopThread

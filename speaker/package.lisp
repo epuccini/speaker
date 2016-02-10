@@ -43,5 +43,6 @@
    #:runloop-listener
    #:runloop-thread-listener
    #:runloop-call-thread-listener
-   #:stop-runloop-thread-listener))
+   #:stop-runloop-thread-listener
+   #:speaking-p))
 0

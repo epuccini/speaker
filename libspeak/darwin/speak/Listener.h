@@ -32,9 +32,10 @@
 - (void)addCommand:(NSString*)command_string;
 - (void)runLoop;
 - (void)runLoopThread;
-- (void)runLoopCallThread;
+- (int32_t)runLoopCallThread;
 - (void)stopMainLoopThread;
 - (void)dummyThread;
+- (bool)isListening;
 
 - (void)registerDidRecognizeCommand:(drc_callback)cb;
 

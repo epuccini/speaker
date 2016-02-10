@@ -169,6 +169,14 @@ created synth instance with given speech."
 	(error (condition) 
 	  (format *error-output* "Speaker: error in 'set-voice-with': ~A~%" condition))))
 
+(defun speaking-p (speaker)
+  "Get flag for speaking at the moment."
+  (handler-case
+	  (foreign-funcall "is_speaking" :pointer speaker :int32)
+	(error (condition)
+	  (format *error-output* 
+			  "Speaker: error in 'speaking-p': ~A~%" condition))))
+
 (defun cleanup-with (speaker)
   "Cleanup. Expecially useful for com-connection in windows."
   (handler-case
@@ -188,7 +196,7 @@ created synth instance with given speech."
 (defun runloop-call-thread-speaker (speaker)
   "Mainthread single runloop-call for speaker."
   (handler-case 
-	  (foreign-funcall "runloop_call_thread_speaker" :pointer speaker :void)
+	  (foreign-funcall "runloop_call_thread_speaker" :pointer speaker :int32)
   (error (condition)
 		 (format *error-output* "Speaker: error in 'runloop_call_thread_speaker': ~A~%" 
 				 condition))))
@@ -258,6 +266,14 @@ runloop."
   (error (condition)
 		 (format *error-output* "Speaker: error in 'stop_listening': ~A~%" condition))))
 
+(defun listening-p (listener)
+  "Get flag for speaking at the moment."
+  (handler-case
+	  (foreign-funcall "is_listening" :pointer listener :int32)
+	(error (condition)
+	  (format *error-output* 
+			  "Speaker: error in 'listening-p': ~A~%" condition))))
+
 (defun add-command (listener command)
   "Add command for recoginition."
   (handler-case
@@ -286,7 +302,7 @@ runloop."
 (defun runloop-call-thread-listener (listener)
   "Listener runloop thread as single call which returns after one loop."
   (handler-case 
-	  (foreign-funcall "runloop_call_thread_listener" :pointer listener :void)
+	  (foreign-funcall "runloop_call_thread_listener" :pointer listener :int32)
   (error (condition)
 		 (format *error-output* "Speaker: error in 'runloop_call_thread_listener': ~A~%" 
 				 condition))))

@@ -34,9 +34,11 @@
 
 - (id)init;
 - (void)runLoopThread;
-- (void)runLoopCallThread;
+- (SInt32)runLoopCallThread;
 
-- (IBAction)speakWithText:(NSString*)text;
+- (void)speakWithText:(NSString*)text;
+
+- (bool)isSpeaking;
 
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb;
 - (void)registerWillSpeakPhonemeCallback:(wsp_callback)cb;

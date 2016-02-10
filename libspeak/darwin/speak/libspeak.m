@@ -86,6 +86,11 @@ void set_voice_with(void* speaker, int index)
     [[((__bridge Speaker*)speaker) synth] setVoice:voiceID];
 }
 
+bool is_speaking(void* speaker)
+{
+    return [((__bridge Speaker*)speaker) isSpeaking];
+}
+
 void cleanup_with(void* speaker)
 {
     [(__bridge Speaker*)speaker setDone:YES];
@@ -97,9 +102,9 @@ void runloop_thread_speaker(void* speaker)
     [(__bridge Speaker*)speaker runLoopThread];
 }
 
-void runloop_call_thread_speaker(void* speaker)
+int32_t runloop_call_thread_speaker(void* speaker)
 {
-    [(__bridge Speaker*)speaker runLoopCallThread];
+    return [(__bridge Speaker*)speaker runLoopCallThread];
 }
 
 ////////////////////////////////////////////////
@@ -166,9 +171,14 @@ void runloop_thread_listener(void* listener)
     [(__bridge Listener*)listener runLoopThread];
 }
 
-void runloop_call_thread_listener(void* listener)
+int32_t runloop_call_thread_listener(void* listener)
 {
-    [(__bridge Listener*)listener runLoopCallThread];
+    return [(__bridge Listener*)listener runLoopCallThread];
+}
+
+bool is_listening(void* listener)
+{
+    return [((__bridge Listener*)listener) isListening];
 }
 
 void stop_runloop_thread_listener(void* listener)

@@ -104,7 +104,7 @@
 	(print "Entering mainloop...")
 	(loop while (not *stop-flag*) do
 		 (runloop-call-thread-speaker speaker)
-		 (runloop-call-thread-listener listener))
+		 (runloop-listener listener))
 	(stop-listening listener)
 	(print "End listening")))
 

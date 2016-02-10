@@ -39,6 +39,12 @@
     return self;
 }
 
+- (bool)isSpeaking
+{
+    if (_synth) return [_synth isSpeaking];
+    return false;
+}
+
 - (void)runLoopThread
 {
     // Set up an autorelease pool here if not using garbage collection.
@@ -60,10 +66,10 @@
     // Clean up code here. Be sure to release any allocated autorelease pools.
 }
 
-- (void)runLoopCallThread
+- (SInt32)runLoopCallThread
 {
     // Start the run loop but return after each source is handled.
-    SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
+    return CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
 }
 
 
@@ -82,7 +88,7 @@
     did_finish_speaking_callback = cb;
 }
 
-- (IBAction)speakWithText:(NSString*)text
+- (void)speakWithText:(NSString*)text
 {
     // speak with speaker instance
     [_synth startSpeakingString:text];
