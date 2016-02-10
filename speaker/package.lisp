@@ -9,10 +9,9 @@
 ; -------------------------------------------------------------
 
 (require 'cffi)
-(require 'bordeaux-threads)
 
 (defpackage :speaker
-  (:use #:cl #:cffi #:bordeaux-threads) 
+  (:use #:cl #:cffi) 
   (:export
    #:main
    #:init-speaker
@@ -33,10 +32,7 @@
    #:make-listener
    #:start-listening
    #:stop-listening
-   #:async-prefix
-   #:enable-async-syntax
-   #:disable-async-syntax
-   #:*previous-readtables*
+   #:add-command
 ;   #:runloop-speaker
    #:runloop-thread-speaker
    #:runloop-call-thread-speaker

@@ -14,15 +14,10 @@
 
 (in-package :speaker)
 
-(require 'bordeaux-threads)
-
 (defvar *listener* nil);
 (defvar *stop-flag* nil);
 
 ;; Example application
-
-(enable-async-syntax)
-
 (defun speaker-test (speaker)
   ;; -------------------------------
   ;;

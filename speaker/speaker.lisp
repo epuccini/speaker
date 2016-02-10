@@ -11,9 +11,6 @@
 (in-package :speaker)
 
 (require 'cffi)
-(require 'bordeaux-threads)
-
-(defvar *previous-readtables* nil)
 
 ;; ---------------------------------
 ;; Setup library (platform specific)
@@ -330,28 +327,3 @@ runloop."
 	  (format *error-output* 
 			  "Speaker: error in 'register-did-recognize-command-callback': ~A~%" condition))))
 
-;;
-;; Async operations
-;;
-(defun async-prefix (stream char)
-  "Reader-macro function for 'async-' substitution."
-  (declare (ignore char))
-  `(bordeaux-threads:make-thread (lambda () ,(read stream t nil t)) 
-								 :name "async-thread"))
-
-(defmacro enable-async-syntax ()
-  "Enable special-character '°' syntax."
-  `(eval-when (:load-toplevel :compile-toplevel :execute)
-      (push common-lisp:*readtable* *previous-readtables*)
-      (setq common-lisp:*readtable* (copy-readtable))
-      (set-macro-character #\° 'async-prefix)))
-  
-(defmacro disable-async-syntax ()
-  "Disable special-character '°' syntax."
-  `(eval-when (:load-toplevel :compile-slitoplevel :execute)
-     (setq *readtable* (pop speaker:*previous-readtables*))))
-
-
-
- 
-  
