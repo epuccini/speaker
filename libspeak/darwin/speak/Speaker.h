@@ -19,7 +19,6 @@
 @interface Speaker : NSObject<NSSpeechSynthesizerDelegate> {
     NSSpeechSynthesizer* _synth;
     unsigned int _voiceid;
-    BOOL _done;
     NSTimer *_timer;
     
     wsw_callback will_speak_word_callback;
@@ -29,15 +28,11 @@
 
 @property (nonatomic, retain)NSSpeechSynthesizer* synth;
 @property (nonatomic)unsigned int voiceid;
-@property (nonatomic, assign)BOOL done;
 @property (nonatomic, retain)NSTimer* timer;
 
 - (id)init;
-- (void)runLoopThread;
-- (SInt32)runLoopCallThread;
-
+- (void)runLoop;
 - (void)speakWithText:(NSString*)text;
-
 - (bool)isSpeaking;
 
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb;

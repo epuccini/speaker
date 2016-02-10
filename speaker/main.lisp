@@ -14,12 +14,13 @@
 
 (in-package :speaker)
 
-(asdf:load-system :trivial-main-thread)
+(require 'bordeaux-threads)
 
 (defvar *listener* nil);
 (defvar *stop-flag* nil);
 
 ;; Example application
+
 (defun speaker-test (speaker)
   ;; -------------------------------
   ;;
@@ -93,7 +94,6 @@
 ;;
 (defun main ()
   "Main test program."
-  (trivial-main-thread:with-body-in-main-thread ()
   (terpri)
   (let ((listener (make-listener))
 		(speaker (make-speaker)))
@@ -104,7 +104,7 @@
 		 (runloop-call-thread-speaker speaker)
 		 (runloop-listener listener))
 	(stop-listening listener)
-	(print "End listening"))))
+	(print "End listening")))
 
 (main)
 

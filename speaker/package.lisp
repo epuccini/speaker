@@ -33,12 +33,7 @@
    #:start-listening
    #:stop-listening
    #:add-command
-;   #:runloop-speaker
-   #:runloop-thread-speaker
-   #:runloop-call-thread-speaker
-   #:runloop-listener
-   #:runloop-thread-listener
-   #:runloop-call-thread-listener
-   #:stop-runloop-thread-listener
+   #:mainloop-speaker
+   #:mainloop-listener
    #:speaking-p))
 0

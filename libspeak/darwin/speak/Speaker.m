@@ -16,7 +16,6 @@
 
 @synthesize synth=_synth;
 @synthesize voiceid=_voiceid;
-@synthesize done=_done;
 @synthesize timer=_timer;
 
 - (id)init {
@@ -31,10 +30,6 @@
         [_synth setDelegate:self];
         
         _voiceid = 6;
-        _done = NO;
-        
-        // start runloop
-        //[self performSelectorInBackground:@selector(mainLoop) withObject:self];
     }
     return self;
 }
@@ -45,33 +40,10 @@
     return false;
 }
 
-- (void)runLoopThread
+- (void)runLoop;
 {
-    // Set up an autorelease pool here if not using garbage collection.
-     // Add your sources or timers to the run loop and do any other setup.
-    do
-    {
-        // Start the run loop but return after each source is handled.
-        SInt32 result = CFRunLoopRunInMode(kCFRunLoopDefaultMode, 10, YES);
-        
-        // If a source explicitly stopped the run loop, or if there are no
-        // sources or timers, go ahead and exit.
-        if (result == kCFRunLoopRunStopped)// || (result == kCFRunLoopRunFinished))
-            _done = YES;
-        // Check for any other exit conditions here and set the
-        // done variable as needed.
-    }
-    while (!_done);
-    
-    // Clean up code here. Be sure to release any allocated autorelease pools.
+    CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
 }
-
-- (SInt32)runLoopCallThread
-{
-    // Start the run loop but return after each source is handled.
-    return CFRunLoopRunInMode(kCFRunLoopDefaultMode, 1, YES);
-}
-
 
 - (void)registerWillSpeakWordCallback:(wsw_callback)cb
 {

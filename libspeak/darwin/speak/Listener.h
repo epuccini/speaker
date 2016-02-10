@@ -19,7 +19,6 @@
     NSSpeechRecognizer* _speechRecognizer;
     NSMutableArray * _commands;
     NSMutableDictionary * _command_dispatch;
-    BOOL _done;
     NSTimer *_timer;
     NSThread* _mainloopThread;
     
@@ -31,9 +30,6 @@
 - (void)stopListening;
 - (void)addCommand:(NSString*)command_string;
 - (void)runLoop;
-- (void)runLoopThread;
-- (int32_t)runLoopCallThread;
-- (void)stopMainLoopThread;
 - (void)dummyThread;
 - (bool)isListening;
 
@@ -45,7 +41,6 @@
 @property (nonatomic, retain)NSSpeechRecognizer* speechRecognizer;
 @property (nonatomic, retain)NSMutableArray* commands;
 @property (nonatomic, retain)NSMutableDictionary* command_dispatch;
-@property (nonatomic, assign)BOOL done;
 @property (atomic, retain)NSThread* mainloopThread;
 
 @end

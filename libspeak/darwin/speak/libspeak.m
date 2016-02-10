@@ -93,18 +93,12 @@ bool is_speaking(void* speaker)
 
 void cleanup_with(void* speaker)
 {
-    [(__bridge Speaker*)speaker setDone:YES];
     speaker = NULL;
 }
 
-void runloop_thread_speaker(void* speaker)
+void mainloop_speaker(void* speaker)
 {
-    [(__bridge Speaker*)speaker runLoopThread];
-}
-
-int32_t runloop_call_thread_speaker(void* speaker)
-{
-    return [(__bridge Speaker*)speaker runLoopCallThread];
+    [(__bridge Speaker*)speaker runLoop];
 }
 
 ////////////////////////////////////////////////
@@ -157,33 +151,17 @@ void stop_listening(void* listener)
 
 void cleanup_listener(void* listener)
 {
-    [(__bridge Listener*)listener setDone:YES];
    listener = NULL;
 }
 
-void runloop_listener(void* listener)
+void mainloop_listener(void* listener)
 {
     [(__bridge Listener*)listener runLoop];
-}
-
-void runloop_thread_listener(void* listener)
-{
-    [(__bridge Listener*)listener runLoopThread];
-}
-
-int32_t runloop_call_thread_listener(void* listener)
-{
-    return [(__bridge Listener*)listener runLoopCallThread];
 }
 
 bool is_listening(void* listener)
 {
     return [((__bridge Listener*)listener) isListening];
-}
-
-void stop_runloop_thread_listener(void* listener)
-{
-    [(__bridge Listener*)listener stopMainLoopThread];
 }
 
 ////////////////////////////////////////////////
