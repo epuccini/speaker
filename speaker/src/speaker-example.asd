@@ -8,12 +8,12 @@
 
 (require 'asdf)
 
-(defsystem "speaker"
+(defsystem "speaker-example"
   :description "Speaker - a language synthesis and recognition application"
   :version "0.1"
   :author "Edward Puccini epuccini@gmx.de"
   :license "LGPL"
   :depends-on ( "cffi" )
   :components (( :file "package" )
-			   ( :file "speaker" :depends-on ( "package" ))))
-               ;( :file "main" :depends-on ( "speaker" ))))
+			   ( :file "speaker" :depends-on ( "package" ))
+               ( :file "example" :depends-on ( "speaker" ))))

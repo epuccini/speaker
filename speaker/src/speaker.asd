@@ -9,11 +9,10 @@
 (require 'asdf)
 
 (defsystem "speaker"
-  :description "Speaker - a language synthesis and recognition application"
+  :description "Speaker - a language synthesis and recognition library"
   :version "0.1"
   :author "Edward Puccini epuccini@gmx.de"
   :license "LGPL"
-  :depends-on ( :cffi :bordeaux-threads )
+  :depends-on ( "cffi" )
   :components (( :file "package" )
-			   ( :file "speaker" :depends-on ( "package" ))
-               ( :file "main" :depends-on ( "speaker" ))))
+			   ( :file "speaker" :depends-on ( "package" ))))

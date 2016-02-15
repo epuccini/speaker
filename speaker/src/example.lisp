@@ -1,4 +1,4 @@
-; -------------------------------------------------------------
+; ------------------------------------------------------------
 ; Edward Alan Puccini 16.01.2016
 ; -------------------------------------------------------------
 ; Speaker library make and loader
@@ -80,9 +80,7 @@
 (cffi:defcallback drc-callback :void ((text :string))
   (format t "Called back and recognize: ~A.~%" text)
   (cond ((equal text "exit")
-		 (progn
-		   (setq *stop-flag* t)
-		   (stop-runloop-thread-listener *listener*)))
+		   (setq *stop-flag* t))
 		((equal text "speak")
 		 (let ((speaker (make-speaker)))
 		   (stop-listening *listener*)
@@ -101,8 +99,8 @@
 	(listener-setup listener)
 	(print "Entering mainloop...")
 	(loop while (not *stop-flag*) do
-		 (runloop-call-thread-speaker speaker)
-		 (runloop-listener listener))
+		 (mainloop-speaker speaker)
+		 (mainloop-listener listener))
 	(stop-listening listener)
 	(print "End listening")))
 
