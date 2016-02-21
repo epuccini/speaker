@@ -171,7 +171,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "19"
             endingLineNumber = "19"
-            landmarkName = "voiceid"
+            landmarkName = "timer"
             landmarkType = "19">
          </BreakpointContent>
       </BreakpointProxy>
@@ -219,8 +219,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "113"
             endingLineNumber = "113"
-            landmarkName = "-speechSynthesizer:didFinishSpeaking:"
-            landmarkType = "5">
+            landmarkName = "@implementation Speaker"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -235,7 +235,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "103"
             endingLineNumber = "103"
-            landmarkName = "-speechSynthesizer:willSpeakPhoneme:"
+            landmarkName = "-speechSynthesizer:didFinishSpeaking:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -251,7 +251,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "91"
             endingLineNumber = "91"
-            landmarkName = "-speechSynthesizer:willSpeakWord:ofString:"
+            landmarkName = "-speechSynthesizer:willSpeakPhoneme:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -267,7 +267,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "79"
             endingLineNumber = "79"
-            landmarkName = "-registerDidRecognizeCommand:"
+            landmarkName = "-startListening"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

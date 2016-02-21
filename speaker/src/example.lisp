@@ -12,9 +12,11 @@
 ; Requirements: cffi
 ; -------------------------------------------------------------
 
-(in-package :speaker)
+(eval-when (:load-toplevel :compile-toplevel :execute)
+  (use-package :speaker))
 
 (require 'bordeaux-threads)
+(require 'trivial-main-thread)
 
 (defvar *listener* nil);
 (defvar *stop-flag* nil);
@@ -92,17 +94,18 @@
 ;;
 (defun main ()
   "Main test program."
-  (terpri)
-  (let ((listener (make-listener))
-		(speaker (make-speaker)))
-	(setf *listener* listener)
-	(listener-setup listener)
-	(print "Entering mainloop...")
-	(loop while (not *stop-flag*) do
-		 (mainloop-speaker speaker)
-		 (mainloop-listener listener))
+  (trivial-main-thread:with-body-in-main-thread () ;; main loop
+	(terpri)
+	(let ((listener (make-listener))
+		  (speaker (make-speaker)))
+	  (setf *listener* listener)
+	  (listener-setup listener)
+	  (print "Entering mainloop...")
+	  (loop while (not *stop-flag*) do 
+		   (mainloop-speaker speaker))
+;		   (mainloop-listener listener))
 	(stop-listening listener)
-	(print "End listening")))
+	(print "End listening"))))
 
 (main)
 
