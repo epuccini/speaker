@@ -35,5 +35,8 @@
    #:add-command
    #:mainloop-speaker
    #:mainloop-listener
-   #:speaking-p))
-0
+   #:speaking-p
+   #:spoken
+   #:spoken-action
+   #:add-commands))
+

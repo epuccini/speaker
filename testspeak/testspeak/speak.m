@@ -62,12 +62,12 @@
     
 }
 
-- (IBAction)speak:(id)sender
+- (IBAction)speak:(NSString*)text
 {
     NSString *voiceID = [[NSSpeechSynthesizer availableVoices] objectAtIndex:0];
     
     [synth setVoice:voiceID];
-    [synth startSpeakingString:@"hello my friend my friend"];
+    [synth startSpeakingString:text];
 }
 
 // ---------------------------------------------------------------------------------

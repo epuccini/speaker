@@ -77,7 +77,8 @@
 				   (progn
 					 (setq message (concatenate 'string 
 												message "~A"))
-					 (push arg arg-list))))) args)
+					 (push arg arg-list)))))
+		  args)
 	(format-with-list message arg-list)))
 
 (defun speak(&rest args)
@@ -290,4 +291,14 @@ created synth instance with given speech."
 	(error (condition) 
 	  (format *error-output* 
 			  "Speaker: error in 'register-did-recognize-command-callback': ~A~%" condition))))
+
+;; ------------------------------------------------------
+;; Utility macros and functions
+;; ------------------------------------------------------
+
+
+(defmacro add-commands (listener &rest commands)
+  `(progn
+     ,@(loop for command in commands collect
+	   `(add-command ,listener ',command))))
 

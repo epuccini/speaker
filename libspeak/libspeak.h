@@ -48,6 +48,7 @@ extern "C"
     LIBRARY_EXPORT void cleanup_speaker(void);
     LIBRARY_EXPORT void mainloop_speaker(void* speaker);
     LIBRARY_EXPORT bool is_speaking(void* speaker);
+    
     ///////////////
     // Speaker OO
     //

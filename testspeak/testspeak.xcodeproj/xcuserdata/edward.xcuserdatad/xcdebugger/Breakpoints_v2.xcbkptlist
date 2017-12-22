@@ -16,7 +16,7 @@
             startingLineNumber = "38"
             endingLineNumber = "38"
             landmarkName = "-speechSynthesizer:willSpeakWord:ofString:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -64,22 +64,6 @@
             startingLineNumber = "49"
             endingLineNumber = "49"
             landmarkName = "-speechSynthesizer:didFinishSpeaking:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "testspeak/main.m"
-            timestampString = "474577130.643402"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "60"
-            endingLineNumber = "60"
-            landmarkName = "main()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -90,13 +74,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "testspeak/main.m"
-            timestampString = "474577163.801617"
+            timestampString = "532627776.762343"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "66"
-            endingLineNumber = "66"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
             landmarkName = "main()"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -112,7 +96,7 @@
             startingLineNumber = "45"
             endingLineNumber = "45"
             landmarkName = "-loop_thread"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -128,7 +112,7 @@
             startingLineNumber = "56"
             endingLineNumber = "56"
             landmarkName = "main()"
-            landmarkType = "7">
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -144,7 +128,7 @@
             startingLineNumber = "31"
             endingLineNumber = "31"
             landmarkName = "-awakeFromNib"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -160,7 +144,7 @@
             startingLineNumber = "70"
             endingLineNumber = "70"
             landmarkName = "-speak:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -176,7 +160,7 @@
             startingLineNumber = "44"
             endingLineNumber = "44"
             landmarkName = "-speechSynthesizer:willSpeakPhoneme:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

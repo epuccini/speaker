@@ -54,12 +54,10 @@ static libspeak *ls;
 
 int main() {
      @autoreleasepool {
-        ls = [[libspeak alloc] init];
-        //MyClass *obj = [[MyClass alloc] init];
-        init_with_speech(pszVoiceAlex);
-         libspeak* ls = [[libspeak alloc]init];
-         [ls speak:ls];
-         //speak("Hello working");
+        libspeak* ls = [[libspeak alloc] init];
+        //init_with_speech(pszVoiceAlex);
+        // speak("Hello working");
+         [ls speak:@"TEST"];
          //sleep(5);
         //[[NSRunLoop currentRunLoop] run];
     }

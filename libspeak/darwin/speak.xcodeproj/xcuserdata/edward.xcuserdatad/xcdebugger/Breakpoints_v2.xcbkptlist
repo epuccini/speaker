@@ -172,7 +172,7 @@
             startingLineNumber = "19"
             endingLineNumber = "19"
             landmarkName = "timer"
-            landmarkType = "19">
+            landmarkType = "24">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -187,8 +187,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "150"
             endingLineNumber = "150"
-            landmarkName = "cleanup_listener()"
-            landmarkType = "7">
+            landmarkName = "stop_listening()"
+            landmarkType = "9">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -204,7 +204,7 @@
             startingLineNumber = "66"
             endingLineNumber = "66"
             landmarkName = "-speechRecognizer:didRecognizeCommand:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -236,7 +236,7 @@
             startingLineNumber = "103"
             endingLineNumber = "103"
             landmarkName = "-speechSynthesizer:didFinishSpeaking:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -252,7 +252,7 @@
             startingLineNumber = "91"
             endingLineNumber = "91"
             landmarkName = "-speechSynthesizer:willSpeakPhoneme:"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -268,7 +268,7 @@
             startingLineNumber = "79"
             endingLineNumber = "79"
             landmarkName = "-startListening"
-            landmarkType = "5">
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
