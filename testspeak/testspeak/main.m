@@ -56,8 +56,8 @@ int main() {
      @autoreleasepool {
         libspeak* ls = [[libspeak alloc] init];
         //init_with_speech(pszVoiceAlex);
-        // speak("Hello working");
-         [ls speak:@"TEST"];
+        //speak("Hello working");
+        [ls speak:@"Test"];
          //sleep(5);
         //[[NSRunLoop currentRunLoop] run];
     }

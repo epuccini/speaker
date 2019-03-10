@@ -71,7 +71,7 @@ void cleanup_speaker(void)
 void* make_speaker()
 {
     Speaker* speaker = [[Speaker alloc] init];
-    return (__bridge void*)speaker;
+    return (__bridge_retained void*)speaker;
 }
 
 void speak_with(void* speaker, char* text)
@@ -130,7 +130,7 @@ void register_did_finish_speaking_callback(void* speaker, dfs_callback cb)
 void* make_listener()
 {
     Listener *listener = [[Listener alloc] init];
-    return (__bridge void *)(listener);
+    return (__bridge_retained void *)(listener);
 }
 
 void add_command(void* listener, char* command)

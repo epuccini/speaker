@@ -117,29 +117,24 @@ with a response."
 ;;
 (defun main ()
   "Main test program."
-(trivial-main-thread:with-body-in-main-thread () ;; main loop
-  (terpri)
-  (print "Start listening")
-  (init-speaker)
-  (set-voice 7)
-  (speak "Test")
-  ;; now with object
-  (setf *speaker* (make-speaker))
-  (setf *listener* (make-listener))
-  (register-did-recognize-command-callback *listener* (cffi:callback drc-callback))
-  (register-will-speak-word-callback *speaker* (cffi:callback wsw-callback))
-  (set-voice-with *speaker* 7)
-  (speak *speaker* "Test")
-  (listener-setup *listener*)
-  (speak-with *speaker* "Entering mainloop")
-  (setf *stop-flag* nil)
-  (loop while (not *stop-flag*) do 
-       (mainloop-speaker *speaker*))
-  ;;(mainloop-listener *listener*))
-  (setf *stop-flag* nil)
-  (stop-listening *listener*)
-  (speak-with *speaker* "exit")
-  (cleanup-with *speaker*)))
+  (trivial-main-thread:with-body-in-main-thread () ;; main loop
+	(terpri)
+	(print "Start listening")
+	(setf *speaker* (make-speaker))
+	(setf *listener* (make-listener))
+	;(register-did-recognize-command-callback *listener* (cffi:callback drc-callback))
+	(register-will-speak-word-callback *speaker* (cffi:callback wsw-callback))
+	(set-voice-with *speaker* 7)
+	(listener-setup *listener*)
+	(speak-with *speaker* "Entering mainloop")
+	(setf *stop-flag* nil)
+	(loop while (not *stop-flag*) do 
+		 (mainloop-speaker *speaker*))
+		 ;;(mainloop-listener *listener*))
+	(setf *stop-flag* nil)
+	(stop-listening *listener*)
+	(speak-with *speaker* "exit")
+	(cleanup-with *speaker*)))
 
 
 
