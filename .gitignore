@@ -11,5 +11,3 @@ lx64fsl
 #test.clj#
 *.clj
 *.bak
-*.dll
-*.so
