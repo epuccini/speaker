@@ -1,5 +1,5 @@
 # speaker
-speaker - Speech synthesis library for Mac OSX
+speaker - Speech synthesis library for Common Lisp under Mac OSX
 
 This speech synthesis library is a cffi interface to the Mac OSX Cocoa library. It enables speech-output and -recognition. 
 Dependency is only cffi.
