@@ -69,9 +69,22 @@ with a response."
   ;; say exit and it will exit
   (spoken-action "exit" (setq *stop-flag* t) 7))
 
+(defun load-data (path)
+  "Load ascii file from path."
+  (let ((store '()))
+	(with-open-file (stream path)
+      (do ((line (read-line stream nil)
+				 (read-line stream nil)))
+          ((null line))
+		(setf store (append store (list line)))))
+	store))
+
 (defun listener-setup (listener)
-  (add-commands listener "test" "speak" "exit" "you")
-  (start-listening listener))
+  (let ((store (load-data "verbs.txt")))
+	(mapcar #'(lambda (word)
+				(add-command *listener* word)) store)
+	(add-commands listener "test" "speak" "exit" "you")
+	(speaker:start-listening listener)))
 
 ;;
 ;; Main
