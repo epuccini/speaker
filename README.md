@@ -2,7 +2,7 @@
 speaker - Speech synthesis library for Common Lisp under Mac OSX
 
 This speech synthesis library is a cffi interface to the Mac OSX Cocoa library. It enables speech-output and -recognition. 
-Dependency is only cffi. For exaxmples you need "bordeaux-threads" and "trivial-main-thread".
+Dependency is only cffi. For exaxmples you need "bordeaux-threads" and "trivial-main-thread". Tested on sbcl, ecl and ccl.
 
 First open the XCode project libspeak and compile the libspeak.dylib and copy the lib to /usr/local/lib.
 Then cd into the speaker/src directory and load your favouorite lisp and type:
