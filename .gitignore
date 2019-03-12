@@ -3,6 +3,7 @@
 *.fasl
 *.lx64fsl
 *~
+*.*~
 #*
 lx64fsl
 *.blend
