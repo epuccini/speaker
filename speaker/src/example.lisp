@@ -49,7 +49,6 @@ with a response."
 			',response
 		    (start-listening *listener*)))))
 
-
 ;;
 ;; Callbacks
 ;;
@@ -64,53 +63,15 @@ with a response."
 
 (cffi:defcallback drc-callback :void ((text :string))
   (format t "Called back and recognize: ~A.~%" text)		  
-  (spoken "love" "love me" 7)
-  (spoken "fuck" "Oh, dont curse" 7)
+  (spoken "test" "this is a test" 7)
   (spoken "you" "I am master blaster" 7)
-  (spoken "you stupid asshole" "I kill you" 7)
   (spoken "speak" "What should i say" 7)
+  ;; say exit and it will exit
   (spoken-action "exit" (setq *stop-flag* t) 7))
 
 (defun listener-setup (listener)
-  (add-commands listener
-		"test" "speak" "exit" "fuck" "you" "you stupid asshole")
+  (add-commands listener "test" "speak" "exit" "you")
   (start-listening listener))
-
-(defun speaker-test (speaker)
-  ;; -------------------------------
-  ;;
-  ;; Examples with plain c interface
-  ;; 
-  (init-speaker)
-  (format t "Available-voices: ~D~%" (available-voices-count))
-  (format t "Get-voice(~D): ~A~%" (get-voice-name 6) "")
-  (sleep 1)
-  (speak "Guten Morgen.")
-  (sleep 2)
-  (set-voice 2)
-  (speak "Hello world")
-  (cleanup-speaker)
-  (sleep 2)
-  ;(make-speaker nil)           ;; error test
-  ;(speak-with nil "Text")      ;; "
-  ;; -------------------------------
-  ;;
-  ;; Examples with wrapper of 
-  ;; objective-c implementation
-  ;;
-  (register-will-speak-word-callback speaker (cffi:callback wsw-callback))
-;  (register-will-speak-phoneme-callback speaker (cffi:callback wsp-callback))
-;  (register-did-finish-speaking-callback speaker (cffi:callback dfs-callback))
-  (set-voice-with speaker 11)
-  (speak-with speaker "Hallo Edward.")
-  (sleep 2)
-  (set-voice-with speaker 7)
-  (speak-with speaker "This is number 7.")
-  (sleep 2)
-  (set-voice-with speaker 9)
-  (speak-with speaker "This is number 9.")
-  (sleep 2)
-  (cleanup-with speaker))
 
 ;;
 ;; Main
@@ -119,23 +80,31 @@ with a response."
   "Main test program."
 (trivial-main-thread:with-body-in-main-thread () ;; main loop
   (terpri)
-  (print "Start listening")
+  (princ "Start listening")
   (init-speaker)
   (set-voice 7)
   (speak "Test")
+
   ;; now with object
   (setf *speaker* (make-speaker))
   (setf *listener* (make-listener))
-  (register-did-recognize-command-callback *listener* (cffi:callback drc-callback))
-  (register-will-speak-word-callback *speaker* (cffi:callback wsw-callback))
+  ;; setup callbacks
+  (register-did-recognize-command-callback
+   *listener* (cffi:callback drc-callback))
+  (register-will-speak-word-callback
+   *speaker* (cffi:callback wsw-callback))
+
+  ;; setup voice, speak and listen
   (set-voice-with *speaker* 7)
-  (speak *speaker* "Test")
   (listener-setup *listener*)
   (speak-with *speaker* "Entering mainloop")
+
+  ;; setup loop
   (setf *stop-flag* nil)
   (loop while (not *stop-flag*) do 
-       (mainloop-speaker *speaker*))
-  ;;(mainloop-listener *listener*))
+       (mainloop-speaker *speaker*)
+       (mainloop-listener *listener*))
+  ;; exit
   (setf *stop-flag* nil)
   (stop-listening *listener*)
   (speak-with *speaker* "exit")

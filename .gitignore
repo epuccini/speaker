@@ -1,5 +1,15 @@
 .DS_Store
-*.exe
+*.fas
 *.fasl
+*.lx64fsl
+*~
+#*
+lx64fsl
+*.blend
+*.glm
 *.bin
-*.obj
+#test.clj#
+*.clj
+*.bak
+*.dll
+*.so
