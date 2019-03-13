@@ -22,7 +22,7 @@
 
 #+windows
 (define-foreign-library libspeak
-  (:windows (:or #P"libspeak.dll" #P"d:\\Code\\Common Lisp\\projects\\Speaker\\speaker\\libspeak.dll")))
+  (:windows (:or #P"libspeak.dll" #P"c:\\Windows\\System32\\libspeak.dll")))
 
 #+linux
 (define-foreign-library libspeak
