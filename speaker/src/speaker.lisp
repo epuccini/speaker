@@ -26,7 +26,7 @@
 
 #+linux
 (define-foreign-library libspeak
-  (:linux (:or "libspeak.so" "/usr/local/lib/libspeak.so")))
+  (:linux (:or "libspeak.so" "/usr/local/lib/libspeak.so.1.0.0")))
 
 #+darwin 
 (load-foreign-library "libspeak.dylib")
@@ -35,7 +35,7 @@
 (load-foreign-library #P"d:\\Code\\Common Lisp\\projects\\Speaker\\speaker\\libspeak.dll")
 
 #+linux
-(load-foreign-library "libspeak.so")
+(load-foreign-library "/usr/local/lib/libspeak.so.1.0.0")
 
 ;; -----------------------
 ;; Error handling

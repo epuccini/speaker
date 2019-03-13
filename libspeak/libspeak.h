@@ -30,13 +30,11 @@ typedef void(*drc_callback)(char*);
 		#define LIBRARY_EXPORT   __declspec( dllimport ) 
 	#endif
 #else
-    #define LIBRARY_EXPORT
+    #define LIBRARY_EXPORT extern
 #endif
 
-#ifdef _WINDLL
 extern "C"
 {
-#endif
     ///////////
     // Speaker
     //
@@ -74,8 +72,8 @@ extern "C"
     
     LIBRARY_EXPORT void register_did_recognize_command_callback(void* listener, drc_callback cb);
     
-    
-    
-#ifdef _WINDLL
+
 }
-#endif
+
+
+
