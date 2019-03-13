@@ -1,10 +1,9 @@
 # speaker
 speaker - Multiplatform Speech synthesis library wrapper for Common Lisp
 
-This speech synthesis library is a cffi interface to the Mac OSX Cocoa library. It enables speech-output and -recognition (only Mac OSX). 
-Dependency is only cffi. MacOSX uses Cocoa NSSpeechSynthesizer, Windows uses SAPI, Linux uses QtTextToSpeech. For exaxmples you need "bordeaux-threads" and "trivial-main-thread". Tested on sbcl, ecl and ccl.
+This speech synthesis library is a cffi interface to the speech library of the platform. It enables speech-output and -recognition (only Mac OSX). Dependency is only cffi. MacOSX uses Cocoa NSSpeechSynthesizer, Windows uses SAPI, Linux uses QtTextToSpeech. For exaxmples you need "bordeaux-threads" and "trivial-main-thread". Tested on sbcl, ecl and ccl.
 
-First open the XCode project libspeak and compile the libspeak.dylib and copy the lib to /usr/local/lib.
+First open the XCode/Visual Studio/QtCreator project libspeak and compile the libspeak.dylib/.so/.dll and copy the lib to /usr/local/lib. Windows users please tune the path in speaker.lisp.
 Then cd into the speaker/src directory and load your favouorite lisp and type:
 
     (asdf:load-system :speaker-examples)
