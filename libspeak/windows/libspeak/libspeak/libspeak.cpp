@@ -117,10 +117,19 @@ void set_voice(int index)
 
 unsigned int available_voices_count(void)
 {
-	return 0;
+    return 0;
 }
 
-void get_voice_name(unsigned int idx, char* pszOut)	
+void set_language(int index)
+{
+}
+
+unsigned int available_languages_count(void)
+{
+    return 0;
+}
+
+void get_voice_name(unsigned int idx, char* pszOut)
 {
 }
 
