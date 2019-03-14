@@ -4,7 +4,7 @@
 ///////////
 // Speaker
 //
-Speaker* speakerLocal;
+static Speaker* speakerLocal;
 
 void init_speaker()  {
     speakerLocal =  new Speaker();
@@ -20,6 +20,13 @@ void set_voice(int index)  {
 
 unsigned int available_voices_count(void)  {
     return speakerLocal->availableVoices();
+}
+void set_language(int index)  {
+    speakerLocal->setLanguage(index);
+}
+
+unsigned int available_languages_count(void)  {
+  return speakerLocal->availableLanguages();
 }
 
 void get_voice_name(unsigned int idx, char* pszOut)  {
@@ -104,5 +111,9 @@ void mainloop_listener(void* listener)  {
 }
 
 bool is_listening(void* listener)  {
+
+}
+
+void register_did_recognize_command_callback(void* listener, drc_callback cb) {
 
 }

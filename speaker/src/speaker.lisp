@@ -111,6 +111,24 @@
 	  (format *error-output* 
 			  "Speaker: error in 'set-voice': ~A~%" condition))))
   
+(defun available-languages-count ()
+  "Get the amount of all available languages."
+  (handler-case
+	  (let ((retval (foreign-funcall "available_languages_count" :uint)))
+		retval)
+	(error (condition)
+	  (format *error-output* 
+			  "Speaker: error in 'available-languages-count': ~A~%" condition))))
+
+
+(defun set-language (idx)
+  "Set languages with id 'idx'."
+  (handler-case
+	  (foreign-funcall "set_language" :uint idx :void)
+	(error (condition)
+	  (format *error-output* 
+			  "Speaker: error in 'set-language': ~A~%" condition))))
+  
 
 (defun get-voice-name (idx)
   "Get name of a voice with index 'idx'."

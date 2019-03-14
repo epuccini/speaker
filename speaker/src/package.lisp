@@ -19,6 +19,8 @@
    #:start-speaking-string
    #:available-voices-count
    #:set-voice
+   #:available-languages-count
+   #:set-language
    #:get-voice-name
    #:cleanup-speaker
    #:make-speaker
