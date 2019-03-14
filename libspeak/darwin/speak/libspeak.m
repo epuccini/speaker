@@ -50,6 +50,16 @@ unsigned int available_voices_count(void)
     return (unsigned int)[a count];
 }
 
+void set_languages(int index)
+{
+    
+}
+
+unsigned int available_languages_count(void)
+{
+    return 0;
+}
+
 void get_voice_name(unsigned int i, char* pszOut)
 {
     NSArray *a = [NSSpeechSynthesizer availableVoices];
