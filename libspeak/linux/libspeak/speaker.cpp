@@ -2,9 +2,15 @@
 
 Speaker::Speaker()
 {
-    QString engine = "default";
     m_speech = new QTextToSpeech(this);
     m_voices = m_speech->availableVoices();
+
+    // get engines
+    foreach (QString engine, QTextToSpeech::availableEngines())
+       m_engines.push_back(engine);
+
+    // get locales
+    m_locales = m_speech->availableLocales();
 }
 
 Speaker::~Speaker()
@@ -21,11 +27,19 @@ void Speaker::setVoice(int idx) {
 }
 
 unsigned int Speaker::availableVoices(void) {
-    m_voices.count();
+    return m_voices.size();
+}
+
+void Speaker::setLanguage(int idx) {
+    m_speech->setLocale(m_locales.at(idx));
+}
+
+unsigned int Speaker::availableLanguages(void) {
+    return m_locales.size();
 }
 
 void Speaker::getVoiceName(char* pszOut) {
     QLocale current = m_speech->locale();
-    QString name = current.name();
+    QString name = current.languageToString(current.language());
     strcpy(pszOut, name.toUtf8());
 }

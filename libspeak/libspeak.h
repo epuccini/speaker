@@ -42,6 +42,8 @@ extern "C"
     LIBRARY_EXPORT void speak(char* text);
     LIBRARY_EXPORT void set_voice(int index);
     LIBRARY_EXPORT unsigned int available_voices_count(void);
+    LIBRARY_EXPORT void set_language(int index);
+    LIBRARY_EXPORT unsigned int available_languages_count(void);
     LIBRARY_EXPORT void get_voice_name(unsigned int idx, char* pszOut);
     LIBRARY_EXPORT void cleanup_speaker(void);
     LIBRARY_EXPORT void mainloop_speaker(void* speaker);
