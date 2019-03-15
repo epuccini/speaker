@@ -94,33 +94,32 @@ with a response."
     (init-speaker)
     (set-voice 7)
     (speak "Speech recognition is only supported on Mac OSX platforms")
-    
+   
     ;; now with object
-#+darwin
-    (progn
-      (setf *speaker* (make-speaker))
-      (setf *listener* (make-listener))
-      ;; setup callbacks
-      (register-did-recognize-command-callback
-       *listener* (cffi:callback drc-callback))
-      (register-will-speak-word-callback
-       *speaker* (cffi:callback wsw-callback))
-      
-      ;; setup voice, speak and listen
-      (set-voice-with *speaker* 7)
-      (listener-setup *listener*)
-      
-      ;; setup loop
-      (setf *stop-flag* nil)
-      (loop while (not *stop-flag*) do 
-           (mainloop-speaker *speaker*)
-           (mainloop-listener *listener*))
-      ;; exit
-      (setf *stop-flag* nil)
-      (stop-listening *listener*)
-      (speak-with *speaker* "exit")
-      (cleanup-with *speaker*))
-  ))
+#+darwin (progn
+		   (setf *speaker* (make-speaker))
+		   (setf *listener* (make-listener))
+		   ;; setup callbacks
+		   (register-did-recognize-command-callback
+			*listener* (cffi:callback drc-callback))
+		   (register-will-speak-word-callback
+			*speaker* (cffi:callback wsw-callback))
+		   
+		   ;; setup voice, speak and listen
+		   (set-voice-with *speaker* 7)
+		   (listener-setup *listener*)
+		   
+		   ;; setup loop
+		   (setf *stop-flag* nil)
+		   (loop while (not *stop-flag*) do 
+				(mainloop-speaker *speaker*)
+				(mainloop-listener *listener*))
+		   ;; exit
+		   (setf *stop-flag* nil)
+		   (stop-listening *listener*)
+		   (speak-with *speaker* "exit")
+		   (cleanup-with *speaker*))
+))
 
 
 
