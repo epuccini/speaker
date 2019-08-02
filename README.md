@@ -11,6 +11,7 @@ First open your IDE XCode/Visual Studio/QtCreator project "libspeak" and compile
 If you just use the library then just type
 
     (asdf:load-system :speaker)
+    (in-package :speaker)
     (init-speaker)
     (speak "Test")
     
