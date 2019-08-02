@@ -49,7 +49,7 @@ BOOL APIENTRY DllMain(
 
 void* make_speaker()
 {
-	libspeak::Speaker *pSpeaker = new libspeak::Speaker(speech);
+	libspeak::Speaker *pSpeaker = new libspeak::Speaker("");
 	return (void*)pSpeaker;
 }
 
@@ -93,7 +93,7 @@ void register_did_finish_speaking_callback(void* speaker, dfs_callback cb)
 // offering a simple c-interface
 //
 
-void init-speaker()
+void init_speaker()
 {
 	if(SUCCEEDED(::CoInitialize(NULL)))
 	{

@@ -12,12 +12,10 @@
 ; Requirements: cffi
 ; -------------------------------------------------------------
 
-(eval-when (:load-toplevel :compile-toplevel :execute)
-  (use-package :speaker))
-
+(require 'speaker)
 (require 'bordeaux-threads)
 (require 'trivial-main-thread)
-
+(require 'cl-string-match)
 ;;
 ;; Global objects
 ;;
@@ -33,21 +31,21 @@
 with a response."
   `(cond ((equal text ,imperative)
           (progn
-            (stop-listening *listener*)
-            (set-voice-with *speaker* ,voice)
-            (speak-with *speaker* ',response)
-            (start-listening *listener*)))))
+            (speaker:stop-listening *listener*)
+            (speaker:set-voice-with *speaker* ,voice)
+            (speaker:speak-with *speaker* ',response)
+            (speaker:start-listening *listener*)))))
 
 (defmacro spoken-action (imperative response voice)
   "Check if commando is spoken and respond
 with a response."
   `(cond ((equal text ,imperative)
           (progn
-            (stop-listening *listener*)
-            (set-voice-with *speaker* ,voice)
-            (speak-with *speaker* ',response)
+            (speaker:stop-listening *listener*)
+            (speaker:set-voice-with *speaker* ,voice)
+            (speaker:speak-with *speaker* ',response)
             ',response
-            (start-listening *listener*)))))
+            (speaker:start-listening *listener*)))))
 
 ;;
 ;; Callbacks
@@ -62,15 +60,16 @@ with a response."
   (format t "Called back and did finish word!~%"))
 
 (cffi:defcallback drc-callback :void ((text :string))
-  (format t "Called back and recognize: ~A.~%" text)          
+  (speaker:speak (format nil "recognize: ~A.~%" text))
   (spoken "test" "this is a test" 7)
   (spoken "you" "I am master blaster" 7)
   (spoken "speak" "What should i say" 7)
-  ;; say exit and it will exit
-  (spoken-action "exit" (setq *stop-flag* t) 7))
+  ;; say leave and it will exit
+  (spoken-action "leave" (setq *stop-flag* t) 7))
 
-(defun load-data (path)
-  "Load ascii file from path."
+
+(defun load-data-old (path)
+   "Load ascii file from path."
   (let ((store '()))
     (with-open-file (stream path)
       (do ((line (read-line stream nil)
@@ -79,9 +78,29 @@ with a response."
         (setf store (append store (list line)))))
     store))
 
+(defun load-data (path)
+   "Load ascii file from path. Faster than read-sequence."
+  (let ((store '()))
+    (with-open-file (stream path :direction :input :element-type 'ascii:ub-char)
+      (loop with reader = (ascii:make-ub-line-reader :stream stream)
+	 for line = (ascii:ub-read-line-string reader)
+	 while line
+	 collect line))))
+
+(defun load-data-alt (path)
+  "Load ascii file from path. Faster than read-line or append."
+  (with-open-file (stream path :direction :input)
+    (let* ((len (file-length stream))
+           (data (make-array len)))
+      (read-sequence data stream)
+      (setf data (map 'string #'append data))
+      (cl-ppcre:split #\newline data))))
+
 (defun listener-setup (listener)
-  (add-commands listener "test" "speak" "exit" "you")
-  (speaker:start-listening listener))
+  (let ((verbs (load-data "../src/verbs.txt")))
+;  (speaker:add-commands listener "test" "speak" "exit" "you")
+  (speaker:add-commands-list listener verbs)
+  (speaker:start-listening listener)))
 
 ;;
 ;; Main

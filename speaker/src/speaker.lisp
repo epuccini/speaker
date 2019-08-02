@@ -32,7 +32,7 @@
 (load-foreign-library "libspeak.dylib")
 
 #+windows
-(load-foreign-library #P"d:\\Code\\Common Lisp\\projects\\Speaker\\speaker\\libspeak.dll")
+(load-foreign-library #P"c:\\Windows\\System32\\libspeak.dll")
 
 #+linux
 (load-foreign-library "/usr/local/lib/libspeak.so.1.0.0")
@@ -315,8 +315,13 @@ created synth instance with given speech."
 ;; ------------------------------------------------------
 
 
-(defmacro add-commands (listener &rest commands)
+(defmacro add-commands (listener &body commands)
   `(progn
      ,@(loop for command in commands collect
-       `(add-command ,listener ',command))))
+       `(add-command ,listener ,command))))
+
+(defun add-commands-list (listener commands)
+  (progn
+     (loop for command in commands collect
+       (add-command listener command))))
 

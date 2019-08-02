@@ -40,5 +40,6 @@
    #:speaking-p
    #:spoken
    #:spoken-action
-   #:add-commands))
+   #:add-commands
+   #:add-commands-list))
 
