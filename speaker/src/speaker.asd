@@ -13,6 +13,6 @@
   :version "0.1"
   :author "Edward Puccini epuccini@gmx.de"
   :license "LGPL"
-  :depends-on ( "cffi" "cl-string-match")
+  :depends-on ( "cffi" )
   :components (( :file "package" )
 			   ( :file "speaker" :depends-on ( "package" ))))
