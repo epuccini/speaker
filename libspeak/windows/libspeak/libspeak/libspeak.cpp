@@ -42,6 +42,70 @@ BOOL APIENTRY DllMain(
 
 ////////////////////////////////////////////////
 //
+// Function for fast setup speaking
+// Only single speaker possible, but
+// offering a simple c-interface
+//
+
+void init_speaker()
+{
+	if (SUCCEEDED(::CoInitialize(NULL)))
+	{
+		HRESULT hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void **)&pVoice);
+	}
+}
+
+void speak(char* text)
+{
+	if (pVoice != NULL)
+	{
+		LPCWSTR ttext = libspeak::GetWC(text);
+		HRESULT hr = pVoice->Speak(ttext, 0, NULL);
+	}
+	return;
+}
+
+void set_voice(int index)
+{
+}
+
+unsigned int available_voices_count(void)
+{
+	return 0;
+}
+
+void set_language(int index)
+{
+}
+
+unsigned int available_languages_count(void)
+{
+	return 0;
+}
+
+void get_voice_name(unsigned int idx, char* pszOut)
+{
+}
+
+void cleanup_speaker()
+{
+	::CoUninitialize();
+	pVoice->Release();
+	pVoice = NULL;
+}
+
+void mainloop_speaker(void* speaker)
+{
+
+}
+
+bool is_speaking(void* speaker)
+{
+	return true;
+}
+
+////////////////////////////////////////////////
+//
 // Function to create Speaker instances
 // This is useful for handling different speakers
 // at once
@@ -86,56 +150,37 @@ void register_did_finish_speaking_callback(void* speaker, dfs_callback cb)
 {
 }
 
-////////////////////////////////////////////////
-//
-// Function for fast setup speaking
-// Only single speaker possible, but
-// offering a simple c-interface
-//
-
-void init_speaker()
+void* make_listener()
 {
-	if(SUCCEEDED(::CoInitialize(NULL)))
-	{
-		HRESULT hr = CoCreateInstance(CLSID_SpVoice, NULL, CLSCTX_ALL, IID_ISpVoice, (void **)&pVoice);
-	}
+	return NULL;
 }
 
-void speak(char* text)
-{
-    if(pVoice != NULL)
-    {
-		LPCWSTR ttext = libspeak::GetWC(text);
-        HRESULT hr = pVoice->Speak(ttext, 0, NULL);
-    }
-    return;
-}
-
-void set_voice(int index)
+void start_listening(void* listener)
 {
 }
 
-unsigned int available_voices_count(void)
-{
-    return 0;
-}
-
-void set_language(int index)
+void stop_listening(void* listener)
 {
 }
 
-unsigned int available_languages_count(void)
-{
-    return 0;
-}
-
-void get_voice_name(unsigned int idx, char* pszOut)
+void add_command(void* listener, char*)
 {
 }
 
-void cleanup()
+void cleanup_listener(void* listener)
 {
-	::CoUninitialize();
-    pVoice->Release();
-    pVoice = NULL;
 }
+
+void mainloop_listener(void* listener)
+{
+}
+
+bool is_listening(void* listener)
+{
+	return true;
+}
+
+void register_did_recognize_command_callback(void* listener, drc_callback cb)
+{
+}
+

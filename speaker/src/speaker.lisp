@@ -31,11 +31,11 @@
 #+darwin 
 (load-foreign-library "libspeak.dylib")
 
-#+windows
-(load-foreign-library #P"c:\\Windows\\System32\\libspeak.dll")
-
 #+linux
 (load-foreign-library "/usr/local/lib/libspeak.so.1.0.0")
+
+#+windows
+(load-foreign-library #P"c:\\Windows\\System32\\libspeak.dll")
 
 ;; -----------------------
 ;; Error handling
